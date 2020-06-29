@@ -1,0 +1,2186 @@
+\documentstyle[11pt]{article}
+%
+% Copyright (c) 1995-1996 by Alex Aiken.  All rights reserved.
+% Permission is granted to modify and distribute this document for
+% for non-commercial purposes, so long as this copyright notice is retained
+% in all copies.
+%
+% Side margins:
+% Actual margin is 1 in + this number
+\oddsidemargin -0.25in
+\evensidemargin -0.25in
+
+% Text width:
+\textwidth 6.9in
+
+% Top margin:
+% Actual margin is 1.5 in + this number
+\topmargin -.3in
+
+% Text height:
+\textheight 8.7in
+
+% generally useful macros for writing
+
+% These allow switching interline spacing; the change takes effect immediately:
+
+\makeatletter
+\newcommand{\singlespacing}{\let\CS=\@currsize\renewcommand{\baselinestretch}{1}\tiny\CS}
+\newcommand{\oneandahalfspacing}{\let\CS=\@currsize\renewcommand{\baselinestretch}{1.25}\tiny\CS}
+\newcommand{\doublespacing}{\let\CS=\@currsize\renewcommand{\baselinestretch}{1.5}\tiny\CS}
+%setspacingto sets the interline spacing to the value of its argument
+% e.g., \setspacingto{1.5} is the same as \doublespacing
+\newcommand{\setspacingto}[1]{\let\CS=\@currsize\renewcommand{\baselinestretch}{#1}\tiny\CS}
+\makeatother
+
+% nonumber
+\newcommand{\nn}{\nonumber}
+
+% Tab for hand-formatting:
+\newcommand{\tab}{\hspace*{2em}}
+
+% Angle brackets:
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
+% s.t.
+\newcommand{\st}{\mbox{\ s.t.\ }}
+
+% otherwise
+\newcommand{\ow}{\m{\rm otherwise}}
+
+% if
+\newcommand{\mif}{\m{\rm if\ }}
+
+% Harpoons
+\newcommand{\rh}{\rightharpoonup}
+\newcommand{\lh}{\leftharpoonup}
+
+% Denotational-semantics-style brackets and bottom:
+\newcommand{\lbk}{\lbrack\!\lbrack}
+\newcommand{\rbk}{\rbrack\!\rbrack}
+\newcommand{\bottom}{\perp}
+
+% Projection operator
+\newcommand{\proj}{\!\downarrow\!}
+
+% macros for mbox combined with another style
+% (useful for changing typefaces in math mode)
+\newcommand {\mboxbf}[1]{\mbox{{\bf #1}}}
+\newcommand {\mboxit}[1]{\mbox{{\it #1}}}
+\newcommand {\mboxem}[1]{\mbox{{\em #1}}}
+\newcommand {\m}{\mbox}
+\newcommand {\ch}{\rm}
+	
+% macro for creating a binary operator
+%
+% example:  \makebinop{\makebinop{\mybmod}{mod}
+%	(duplicates the \bmod macro)
+%
+\def\makebinop#1#2{\def#1{\mskip-\medmuskip \mskip5mu
+\mathbin{\rm #2} \penalty900 \mskip5mu \mskip-\medmuskip}}
+
+% Environments for theorems, lemmas, etc.
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{fact}{Fact}[theorem]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{constraint}[theorem]{Constraint}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{law}[theorem]{Law}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{invariant}[theorem]{Invariant}
+
+% Definition of the proof-environment:
+\newenvironment{proof}{{\bf Proof:}\quad}{$\Box$}
+
+
+%
+% An environment for formatting programs. 
+%
+%	written by Hal Perkins
+%	adapted by Charles Elkan	9/3/86
+%	keyword macros by Anne Neirynck
+%
+% Usage :
+%
+% \begin{program}
+% program text\\
+% program text
+% \end{program}
+%
+% The program environment is a tabbing environment with ten tab stops spaced
+% evenly from the left of the page.  Initially the left margin is the second
+% tab stop.  Use \+ to indent following lines one more tab stop, \- to undo
+% the effect of \+, and \> at the beginning of a line to indent an extra tab.
+
+\newlength{\pgmtab}          %  \pgmtab is the width of each tab in the
+\setlength{\pgmtab}{2em}     %  program environment
+
+% boxed program is like program, only boxed!
+% This is useful for centering programs and preventing page breaks in programs.
+% argument t or b is required.
+
+\newenvironment{boxed-program}[1]{\begin{minipage}[#1]{9in}
+\begin{tabbing}\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=%
+\kill}{\end{tabbing}\end{minipage}}
+
+\newenvironment{program}{\begin{tabbing}\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=%
+\+\+\kill}{\end{tabbing}}
+
+% The following commands should be used OUTSIDE math mode
+
+\newcommand {\FUNCTION}{{\bf function\ }}
+\newcommand {\BEGIN}{{\bf begin\ }}
+\newcommand {\END}{{\bf end}}
+\newcommand {\CASE}{{\bf case}}
+\newcommand {\OF}{{\bf of}}
+\newcommand {\SELECT}{{\bf select\ }}
+\newcommand {\WHERE}{{\bf where\ }}
+\newcommand {\DECLARE}{{\bf declare\ }}
+\newcommand {\ARRAY}{{\bf array\ }}
+\newcommand {\LET}{{\bf\ let\ }}
+\newcommand {\IN}{{\bf\ in\ }}
+\newcommand {\IF}{{\bf if\ }}
+\newcommand {\THEN}{{\bf then\ }}
+\newcommand {\ELSE}{{\bf else\ }}
+\newcommand {\SKIP}{{\bf skip\ }}
+\newcommand {\DO}{{\bf do\ }}
+% OLD---don't use \OD
+\newcommand {\OD}{{\bf od\ }}
+\newcommand {\BY}{{\bf by\ }}
+\newcommand {\LOOP}{{\bf loop\ }}
+\newcommand {\WHILE}{{\bf while\ }}
+\newcommand {\TO}{{\bf to\ }}
+\newcommand {\DOWNTO}{{\bf down to\ }}
+\newcommand {\FOR}{{\bf for\ }}
+\newcommand {\FOREACH}{{\bf for each\ }}
+\newcommand {\RETURN}{{\bf return\ }}
+\newcommand {\REPEAT}{{\bf repeat\ }}
+\newcommand {\UNTIL}{{\bf until\ }}
+\newcommand {\LCOM}{$(\ast \;$}
+\newcommand {\RCOM}{$\ast)$}
+\newcommand {\GOTO}{{\bf goto\ }}
+
+% The following commands are for use INSIDE math mode
+
+\newcommand {\OP}[1]{\mbox{\sc #1}}
+\newcommand {\op}[1]{\mbox{\sc #1}}
+\newcommand {\mm}[1]{\mbox{\rm #1}\;}
+\newcommand {\id}[1]{\mbox{\it #1\ }}
+
+\newcommand {\ASSIGN}{\leftarrow }
+\newcommand {\MIN}{\OP{min} }
+\newcommand {\MOD}{\; {\bf{\rm mod}} \; } 
+\newcommand {\LAMBDA}{{\bf \lambda\ }}
+\newcommand {\FALSE}{{\em FALSE\ }}
+
+% Miscellaneous notation
+
+\newcommand {\And}{\wedge}
+\newcommand {\Or}{\vee}
+
+\newcommand {\thus}{{\dot{. \: .}\;}}
+
+\newcommand {\bigO}[1]{{\cal O}(#1)}
+
+\newcommand {\app}{\!\!:\!}
+\newcommand {\hastype}{::}
+\newcommand{\hast}{:}
+\newcommand{\qt}[1]{\mbox{``#1''}}
+\newcommand{\TexComment}[1]{}
+
+\newcommand{\dq}{\m{\tt "}}
+\newcommand{\flatqt}[1]{\m{\dq #1 \dq}}
+\newcommand{\seq}{\subseteq}
+\newcommand{\derives}{\vdash}
+
+% for writing grammars
+\newcommand{\grammar}{::=}
+\newcommand{\gor}{\,|\,}
+
+% macros for writing inference rules
+\newcommand{\infrule}[2]{\displaystyle{\displaystyle\strut{#1}} \over %
+                                        {\displaystyle\strut {#2}}}
+\newcommand{\cinfrule}[3]{\parbox{14cm}{\hfil$\infrule{#1}{#2}$\hfil}\parbox{4cm}{$\,#3$\hfil}}
+
+
+\newcommand{\kw}[1]{\m{\bf #1}}
+\newcommand{\nt}[1]{\m{\it #1}}
+\newcommand{\tm}[1]{\m{#1}}
+\newcommand{\s}{\;\,}
+\newcommand{\assgn}{\s\m{\tt <-}\s}
+\newcommand{\styp}{{\tt SELF\_TYPE}}
+
+
+\newcommand{\attr}[3]{#1:#2\leftarrow#3}
+\newcommand{\classmap}[2]{class(#1) = (#2)}
+\newcommand{\tcrule}[3]{\frac{#1}{#2}\eqno\mbox{#3}}
+\newcommand{\ossimple}[6]{#1,#2,#3\vdash #4 : #5,#6}
+\newcommand{\osrule}[8]{\frac{#7}{\ossimple{#1}{#2}{#3}{#4}{#5}{#6}}\eqno
+\mbox{#8}}
+\def\U#1{{\sf{}#1}}
+\def\S#1{{\tt{}#1}} % NB: we often use \verb+...+ for this also
+\def\C#1{{\tt{}#1}}
+
+\begin{document}
+
+\title{CoolAid: The Cool Reference Manual\thanks{
+Copyright \copyright 1995-1996 by Alex Aiken.
+All rights reserved.}}  
+
+\author{ }
+\date{ }
+\maketitle
+
+
+
+\section{Introduction}
+
+This manual describes the programming language Cool: the {\em C}lassroom
+{\em O}bject-{\em O}riented {\em L}anguage.
+Cool is a small language that can be
+implemented with reasonable effort in a one semester course.  Still, Cool
+retains many of the features of modern programming languages including
+objects, static typing, and automatic memory management.
+
+Cool programs are sets of {\em classes}.  A class encapsulates the variables
+and procedures of a data type.  Instances of a class are
+{\em objects}.  In Cool, classes and types are identified; i.e., every
+class defines a type.  Classes permit programmers to define new
+types and associated procedures (or {\em methods}) specific to those
+types.  Inheritance allows new types to extend the behavior of
+existing types.
+
+Cool is an {\em expression} language.  Most Cool constructs are
+expressions, and every expression has a value and a type.  Cool is
+{\em type safe}: procedures are guaranteed to be applied to data of
+the correct type.  While static typing imposes a strong discipline on
+programming in Cool, it guarantees that no runtime type errors can
+arise in the execution of Cool programs.
+
+This manual is divided into informal and formal components.  For a short,
+informal overview, the first 12 pages (through Section~\ref{sec-main}) suffices.
+The formal description begins with Section~\ref{lex-struct}.
+
+\section{Getting Started}
+\label{sec-start}
+
+The reader who wants to get a sense for Cool at the outset should
+begin by reading and running the example programs in the directory
+{\tt \~{ }cs164/examples}.  Cool source files have extension {\tt .cl}
+and Cool assembly files have extension {\tt .s}.
+The Cool compiler is {\tt \~{ }cs164/bin/coolc}.  To compile a program:
+\begin{verbatim}
+coolc [ -o fileout ] file1.cl file2.cl ... filen.cl 
+\end{verbatim}
+
+The compiler compiles the files {\tt file1.cl} through {\tt filen.cl}
+as if they were concatenated together.  Each file must define a
+set of complete classes---class definitions may not be split across
+files.  The {\tt -o} option specifies an optional name to use for the
+output assembly code.  If {\tt fileout} is not supplied, the output
+assembly is named {\tt file1.s}.
+
+The {\tt coolc} compiler generates MIPS assembly code.  Because not
+all of the machines the course is using are MIPS-based, Cool
+programs are run on a MIPS simulator called {\tt spim}.  To run a cool
+program, type
+\begin{verbatim}
+% spim
+(spim) load "file.s"
+(spim) run
+\end{verbatim}
+To run a different program during the same {\tt spim} session, it is
+necessary to reinitialize the state of the simulator before loading the
+new assembly file:
+\begin{verbatim}
+(spim) reinit
+\end{verbatim}
+An alternative---and faster---way to invoke {\tt spim} is with a file:
+\begin{verbatim}
+spim -file file.s
+\end{verbatim}
+This form loads the file, runs the program, and exits {\tt spim} when 
+the program terminates.
+Be sure that {\tt spim} is invoked using the script {\tt \~{ }cs164/bin/spim}.
+There is another version of {\tt spim} installed in {\tt /usr/local/bin} on
+some systems, but it will not execute Cool programs.  An easy way to be sure
+of getting the correct version is to add {\tt \~{ }cs164/bin} to your search
+path (before {\tt /usr/local/bin}!).  The {\tt spim} manual is available
+on the course Web page.
+
+The following is a complete transcript of the compilation and
+execution of {\tt \~{ }cs164/examples/list.cl}.  This program is very
+silly, but it does serve to illustrate many of the features of
+Cool.
+
+\begin{verbatim}
+% coolc list.cl
+% spim
+SPIM Version 5.4 of Jan. 17, 1994
+Copyright 1990-1994 by James R. Larus (larus@cs.wisc.edu).
+All Rights Reserved.
+See the file README a full copyright notice.
+Loaded: /home/n/cs164/lib/trap.handler
+(spim) load "list.s"
+(spim) run
+How many numbers to sort?5
+0
+1
+2
+3
+4
+COOL program successfully executed
+(spim) exit
+% 
+\end{verbatim}
+
+\section{Classes}
+
+All code in Cool is organized into classes.  Each class definition must be
+contained in a single source file, but multiple classes may be defined in the
+same file.  Class definitions have the form:
+
+\begin{verbatim}
+class <type> [ inherits <type> ] is
+    <feature_list>
+end;
+\end{verbatim}
+
+The notation {\tt [ \ldots ]} denotes an optional construct.
+All class names are globally visible.  Class names begin with an
+uppercase letter.  Classes may not be redefined.
+
+\subsection{Features}
+
+The body of a class definition consists of a list of feature
+definitions.  A feature is either an {\em attribute} or a {\em
+method}.  An attribute of class {\tt A} specifies a variable that is
+part of the state of objects of class {\tt A}.  A method of class {\tt
+A} is a procedure that may manipulate the variables and objects of class {\tt A}.
+
+One of the major themes of modern programming languages is {\em
+information hiding}, which is the idea that certain aspects of a data
+type's implementation should be abstract and hidden from users of the
+data type.  Cool supports information hiding through a simple
+mechanism: all attributes have scope local to the class, and all
+methods have global scope.  Thus, the only way to provide access to
+object state in Cool is through methods.
+
+Feature names must begin with a lowercase letter.  No method name
+may be defined multiple times in a class, and no attribute name
+may be defined multiple times in a class, but a method and an attribute
+may have the same name.
+
+A fragment from {\tt list.cl} illustrates simple cases of both attributes
+and methods:
+
+\begin{verbatim}
+class Cons inherits List is
+	xcar : Int;
+	xcdr : List;
+
+	isNil() : Bool is false end;
+
+	init(hd : Int, tl : List) : Cons is
+	  begin
+	    xcar <- hd;
+	    xcdr <- tl;
+	    self;
+	  end
+...
+end;
+\end{verbatim}
+In this example, the class {\tt Cons} has two attributes {\tt xcar} and
+{\tt xcdr} and two methods {\tt isNil} and {\tt init}.  Note that the types
+of attributes, as well as the types of formal parameters and return types
+of methods, are explicitly declared by the programmer.  
+
+Given objects {\tt c} of class {\tt Cons} and {\tt l} of class {\tt
+List}, we can set the {\tt xcar} and {\tt xcdr} fields by using the
+method {\tt init}:
+
+\begin{verbatim}
+c.init(1,l)
+\end{verbatim}
+
+This notation is {\em object-oriented dispatch}.  There may be many
+definitions of {\tt init} methods in many different classes.  The
+dispatch looks up the class of the object {\tt c} to decide which {\tt
+init} method to invoke.  Because the class of {\tt c} is {\tt Cons},
+the {\tt init} method in the {\tt Cons} class is invoked.  Within the
+invocation, the variables {\tt xcar} and {\tt xcdr} refer to {\tt c}'s
+attributes.  The special variable {\tt self} refers to the object on
+which the method was dispatched, which, in the example, is {\tt c} itself.
+
+There is a special form {\tt new C} that generates a fresh object of
+class {\tt C}.  An object can be thought of as a record that has a
+slot for each of the attributes of the class as well as
+pointers to the methods of the class.
+A typical dispatch for the {\tt init} method is:
+\begin{verbatim}
+(new Cons).init(1,new Nil)
+\end{verbatim}
+This example creates a new cons cell and initializes the ``car'' of
+the cons cell to be {\tt 1} and the ``cdr'' to be {\tt new
+Nil}.\footnote{In this example, {\tt Nil} is assumed to be a subtype
+of {\tt List}.} There is no mechanism in Cool for programmers to
+deallocate objects.  Cool has {\em automatic memory management};
+objects that cannot be used by the program are deallocated by a
+runtime garbage collector.
+
+
+Attributes are discussed further in Section~\ref{sec-attr}
+and methods are discussed further in Section~\ref{sec-method}.
+
+
+\subsection{Inheritance}
+\label{sec-inherit}
+
+If a class definition has the form
+\begin{verbatim}
+class A inherits B is ... end;
+\end{verbatim}
+then class {\tt A} inherits the features of {\tt B}.
+In this case {\tt B} is the {\em parent} class of {\tt A}
+and {\tt A} is a {\em child} class of {\tt B}.
+
+The semantics of {\tt A inherits B} is that {\tt A} has all of the
+features defined in {\tt B} in addition to its own features.
+In the case that a parent and child both define the same method
+name, then the definition given in the child class takes precedence.
+It is illegal to redefine attribute names.  Furthermore, for type safety,
+it is necessary to place some restrictions on how methods may be redefined
+(see Section~\ref{sec-method}).
+
+There is a distinguished class {\tt Object}.  If a class definition
+does not specify a parent class, then the class inherits from {\tt
+Object} by default.  A class may inherit only from a single class;
+this is aptly called ``single inheritance.''\footnote{Some
+object-oriented languages allow a class to inherit from multiple
+classes, which is equally aptly called ``multiple inheritance.''} The
+parent-child relation on classes defines a graph.  This graph may not
+contain cycles.  For example, if {\tt A} inherits from {\tt B}, then
+{\tt B} must not inherit from {\tt A}.  Furthermore, if {\tt A}
+inherits from {\tt B}, then {\tt B} must have a class definition
+somewhere in the program.  Because Cool has single inheritance,
+it follows that if both of these restrictions are
+satisfied, then the inheritance graph forms a tree with {\tt Object}
+as the root.
+
+In addition to {\tt Object}, Cool has four other {\em basic classes}: 
+	{\tt Int}, {\tt String}, {\tt Bool}, and {\tt IO}.
+The basic classes are discussed in Section~\ref{sec-basic}.
+
+\section{Types}
+
+In Cool, every class name is also a type.  In addition, there is a
+type \styp\ that can be used in special circumstances.
+
+A {\em type declaration} has the form {\tt x:C}, where {\tt x} is a variable
+and {\tt C} is a type.  Every variable must have a type declaration at the
+point it is introduced, whether that is in a {\tt let}, {\tt case}, or as
+the formal parameter of a method.  The types of all attributes must also be
+declared.
+
+The basic type rule in Cool is that if a method or variable expects a value
+of type {\tt A}, then any value of type {\tt B} may be used instead, provided
+that {\tt A} is an ancestor of {\tt B} in the class hierarchy.  In other
+words, if {\tt B} inherits from {\tt A}, either directly or indirectly, then
+a {\tt B} can be used wherever an {\tt A} would suffice.  
+
+When an object of class {\tt B} may be used in place of an object of class
+{\tt A}, we say that {\tt B} {\em conforms} to {\tt A} or that
+$\tt B \leq A$.  As discussed above,
+conformance is defined in terms of the inheritance graph.
+\begin{definition}[Conformance]
+\label{def-conforms}
+\rm
+Let $\tt A,B,$ and $\tt C$ be types.
+\begin{itemize}
+\item $\tt A \leq A$ for all types {\tt A}
+
+\item if {\tt A} inherits from {\tt B}, then $\tt A \leq B$
+
+\item if $\tt A \leq B$ and $\tt B \leq C$ then $\tt A \leq C$
+
+\end{itemize}
+\end{definition}
+
+Because {\tt Object} is the root of the class hierarchy, it follows that
+$\tt A \leq Object$ for all types $\tt A$.
+
+\subsection{SELF\_TYPE}
+
+The type \styp\ is used to refer to the type of the {\tt self}
+variable.  This is useful in classes that will be inherited by other
+classes, because it allows the programmer to avoid specifying
+a fixed final type at the time the class is written.  For example,
+the program
+\begin{verbatim}
+class Silly is
+   copy() : SELF_TYPE is self end;
+end;
+
+class Sally inherits Silly is end;
+
+class Main is
+   x : Sally <- (new Sally).copy();
+
+   main() : Sally is x end;
+end;
+\end{verbatim}
+Because \styp\ is used in the definition of the {\tt copy} method,
+we know that the result of {\tt copy} is  the same as the 
+type of the {\tt self}
+parameter.  Thus, it follows that {\tt (new Sally).copy()} has
+type {\tt Sally}, which conforms to the declaration of attribute {\tt x}.
+
+Note that the meaning of \styp\ is not fixed, but depends on the class
+in which it is used.  In general, \styp\ may refer to the class {\tt C}
+in which it appears, or any class that conforms to {\tt C}.  When it is
+useful to make explicit what $\styp$ may refer too, we use the 
+name of the class {\tt C} in which \styp\ appears as an index $\styp_{\tt C}$.
+This subscript notation is not part of Cool syntax---it is used merely
+to make clear in what class a particular occurrence of \styp\ appears.
+
+From Definition~\ref{def-conforms}, it follows that
+$\styp_{\tt X} \leq \styp_{\tt X}$.
+There is also a special conformance rule for \styp:
+\[ \tt \styp_C \leq B \;\m{\rm\ if\ }\; C \leq B \]
+
+Finally, \styp\ may be used in the following places: {\tt new \styp},
+as the return type of a method, as the declared type of a {\tt let}
+variable, or as the declared type of an attribute. No other uses of
+\styp\ are permitted.
+
+\subsection{Type Checking}
+
+The Cool type system guarantees at compile time that execution of a program
+cannot result in runtime type errors.  Using the type declarations for
+identifiers supplied by the programmer, the type checker infers a type for
+every expression in the program.  
+
+It is important to distinguish between the type assigned by the type
+checker to an expression at compile time, which we shall call the {\em
+static} type of the expression, and the type(s) to which the
+expression may evaluate during execution, which we shall call the {\em
+dynamic} types.
+
+The distinction between static and dynamic types is needed because the
+type checker cannot, at compile time, have perfect information about
+what values will be computed at runtime.  Thus, in general, the static and
+dynamic types may be different.  What we require, however, is that the
+type checker's static types be {\em sound} with respect to the dynamic types.
+
+\begin{definition}
+\rm
+For any expression  {\tt e}, let $\tt D_e$ be a dynamic type of {\tt e}
+and let $\tt S_e$ be the static type inferred by the type checker.
+Then the type checker is {\em sound} if for all expressions {\tt e} it is the
+case that $\tt D_e \leq S_e$.
+\end{definition}
+
+Put another way, we require that the type checker err on the side of
+overestimating the type of an expression in those cases where perfect
+accuracy is not possible.  Such a type checker will never accept a
+program that contains type errors.  However, the price paid is that
+the type checker will reject some programs that would actually execute
+without runtime errors.
+
+\section{Attributes}
+\label{sec-attr}
+
+An attribute definition has the form
+\begin{verbatim}
+<id> : <type> [ <- <expr> ];
+\end{verbatim}
+The expression is optional initialization that is executed when a new
+object is created.  The static type of the expression must conform to
+the declared type of the attribute.  If no initialization is supplied,
+then the default initialization is used (see below).
+
+When a new object of a class is created, all of
+the inherited and local attributes must be initialized.  Inherited
+attributes are initialized first in inheritance order beginning with the
+attributes of the greatest ancestor class. Within a given class,
+attributes are initialized in the order they appear in the source
+text.
+
+ Attributes are local to the class in which they are defined or inherited.
+Inherited attributes cannot be redefined.
+
+\subsection{Void}
+
+All variables in Cool are initialized to contain values of the
+appropriate type.  The special value {\tt void} is a member of all
+types and is used as the default initialization for variables where
+no initialization is supplied by the user.
+
+There is a special form {\tt isvoid expr} that tests whether a value
+is {\tt void} (see Section~\ref{sec-isvoid}).  In addition, {\tt void}
+may be tested for equality.  Void may be passed as an
+argument, assigned to a variable, or otherwise used in any context
+where any value is legitimate, except that a dispatch to or case on
+{\tt void} generates a runtime error.
+
+Variables of the basic classes {\tt Int}, {\tt Bool}, and {\tt String} are 
+initialized specially; see Section~\ref{sec-basic}.
+
+\section{Methods}
+\label{sec-method}
+
+A method definition has the form
+\begin{verbatim}
+<id>(<id> : <type>,...,<id> : <type>): <type> is <expr> end;
+\end{verbatim}
+There may be zero or more formal parameters.  The identifiers used
+in the formal parameter list must be distinct.  The type of the
+method body must conform to the declared return type.  When a method is
+invoked, the formal parameters are bound to the actual arguments
+and the expression is evaluated; the resulting value is the meaning
+of the method invocation.  A formal parameter
+hides any definition of an attribute of the same name.  
+
+To ensure type safety, there are restrictions on the redefinition of
+inherited methods.  The rule is simple: If a class {\tt A} inherits a
+method {\tt f} from an ancestor class {\tt B}, then {\tt A} may
+override the inherited definition of {\tt f} provided the number of
+arguments, the types of the formal parameters, and the return type are
+exactly the same in both definitions. 
+
+To see why some restriction is necessary on the redefinition of inherited
+methods, consider the following example:
+\begin{verbatim}
+class A is
+   f(): Int is 1 end;
+end;
+
+class B inherits A is
+   f(): String is "1" end;
+end;
+\end{verbatim}
+Let {\tt a} be an object with dynamic type {\tt A}.
+Then 
+\begin{verbatim}
+a.f() + 1
+\end{verbatim}
+is a well-formed expression with value 2.  However, we cannot
+substitute a value of type {\tt B} for {\tt a}, as it would result in
+adding a string to a number.  Thus, if methods can be 
+redefined arbitrarily, then subclasses may not simply extend the behavior of
+their parents, and much of the usefulness of inheritance, as well
+as type safety, is lost.
+
+\section{Expressions}
+\label{sec-expr}
+
+Expressions are the largest syntactic category in Cool.
+\subsection{Constants}
+
+The simplest expressions are constants.  The boolean constants are 
+{\tt true} and {\tt false}.  Integer constants are unsigned strings of
+digits such as {\tt 0}, {\tt 123}, and {\tt 007}.  String constants 
+are sequences of characters enclosed in double quotes, such as
+{\tt  "This is a string."}  
+String constants may be at most 1024 characters long.  There are
+other restrictions on strings; see Section~\ref{lex-struct}.
+
+The constants belong to the basic classes {\tt Bool}, {\tt Int}, and
+{\tt String}.
+The value of a constant is an object of the appropriate basic class.
+
+\subsection{Identifiers}
+
+The names of local variables, formal parameters of methods,  {\tt self},
+and class attributes are all expressions.  The identifier {\tt self} may
+be referenced, but it is an error to assign to {\tt self} or to bind
+{\tt self} in a {\tt let}, a {\tt case}, or as a formal parameter.
+It is also illegal to have attributes named {\tt self}.
+
+Local variables and formal parameters have lexical scope.  Attributes
+are visible throughout a class in which they are declared or
+inherited, although they may be hidden by local declarations within
+expressions.  The binding of an identifier reference is the innermost
+scope that contains a declaration for that identifier, or to the
+attribute of the same name if there is no other declaration.  The
+exception to this rule is the identifier {\tt self}, which is
+implicitly bound in every class.
+
+\subsection{Assignment}
+An assignment has the form
+\begin{verbatim}
+<id> <- <expr> 
+\end{verbatim}
+The static type of the expression must conform to the declared type of
+the identifier.  The value is the value of the expression.
+The static type of an assignment is the static type of {\tt <expr>}.
+
+\subsection{Dispatch}
+
+There are three forms of dispatch in Cool. 
+The three forms differ only in how the called method is selected.
+The most commonly used form of dispatch is
+\begin{verbatim}
+<expr>.<id>(<expr>,...,<expr>)
+\end{verbatim}
+Consider the dispatch $\tt e_0.f(e_1,\ldots,e_n)$.
+To evaluate this expression, the arguments are evaluated in left-to-right
+order, from $\tt e_1$ to $\tt e_n$.  Next, $\tt e_0$ is evaluated and
+its class {\tt C} noted (if $\tt e_0$ is {\tt void} a runtime error is
+generated).  Finally, the method {\tt f} in class {\tt C}
+is invoked, with the value of $\tt e_0$ bound to {\tt self} in the body of
+{\tt f} and the actual arguments bound to the formals as usual.
+The value of the expression is the value returned by the method invocation.
+
+Type checking a dispatch involves several steps.  Assume $\tt e_0$ has
+static type {\tt A}.  (Recall that this type is not necessarily the
+same as the type {\tt C} above.  {\tt A} is the type inferred by the
+type checker; {\tt C} is the class of the object computed at runtime,
+which is potentially any subclass of {\tt A}.)  Class {\tt A} must
+have a method {\tt f}, the dispatch and the definition of {\tt f} must
+have the same number of arguments, and the static type of the $i$th actual
+parameter must conform to the declared type of the $i$th formal
+parameter.
+
+If {\tt f} has return type {\tt B} and {\tt B} is a class name, then
+the static type of the dispatch is {\tt B}.  Otherwise, if {\tt f} has
+return type \styp, then the static type of the dispatch is {\tt A}. To see
+why this is sound, note that the {\tt self} parameter of the method {\tt f}
+conforms to type {\tt A}.  Therefore, because {\tt f} returns \styp,
+we can infer that the result must also conform to {\tt A}.  Inferring
+accurate static types for dispatch expressions is what justifies including
+\styp\ in the Cool type system.
+
+
+The other forms of dispatch are:
+\begin{verbatim}
+<id>(<expr>,...,<expr>)
+<expr>@<type>.id(<expr>,...,<expr>)
+\end{verbatim}
+The first form is shorthand for {\tt self.<id>(<expr>,...,<expr>)}.
+
+The second form  provides a way of accessing methods of parent classes 
+that have been hidden by redefinitions in child classes.
+Instead of using the class of the leftmost expression
+to determine the method, the method of the class explicitly specified is
+used.  For example, {\tt e@B.f()} invokes the method {\tt f} in
+class {\tt B} on the object that is the value of {\tt e}.  For this form
+of dispatch, the static type to the left of ``@''must conform to the
+type specified to the right of ``@''.
+
+\subsection{Conditionals}
+\label{sec-cond}
+
+A conditional has the form
+\begin{verbatim}
+if <expr> then <expr> else <expr> fi
+\end{verbatim}
+
+The semantics of conditionals is standard.  The predicate is evaluated
+first.  If the predicate is {\tt true}, then the {\tt then} branch is
+evaluated.  If the predicate is {\tt false}, then the {\tt else} branch is
+evaluated.  The value of the conditional is the value of the evaluated branch.
+
+The predicate must have static type {\tt Bool}.  The branches may have any static types.
+To specify the static type of the conditional, we define an operation $\sqcup$
+(pronounced ``join'') on types as follows.  Let {\tt A,B,D} be any types other than \styp.  The {\em least type} of a set of types means the least element
+with respect to the conformance relation $\leq$.
+\[
+\begin{array}{rcl}
+\tt A \sqcup B & = & \tt \m{\rm the least type\ } C \m{\rm \ such that\ }
+	 A \leq C \m{\rm\ and } B \leq C \\
+\tt \styp_D \sqcup \styp_D & = & \tt \styp_D \\
+\tt \styp_D \sqcup A & = & \tt D \sqcup A \\
+\tt A \sqcup \styp_D & = & \tt A \sqcup D 
+\end{array}
+\]
+
+Let {\tt T} and {\tt F} be the static types of the branches of the conditional.
+Then the static type of the conditional is $\tt T \sqcup F$.
+
+\subsection{Loops}
+A loop has the form
+\begin{verbatim}
+while <expr> loop <expr> pool
+\end{verbatim}
+The predicate is evaluated before each iteration of the loop.
+If the predicate is {\tt false}, the loop terminates and {\tt void}
+is returned.  If the predicate is {\tt true},
+the body of the loop is evaluated and the process repeats.
+
+The predicate must have static type {\tt Bool}.  The body may have any
+static type.  The static type of a loop expression is {\tt Object}.
+
+\subsection{Blocks}
+A block has the form
+\begin{verbatim}
+begin <expr>; ... <expr>; end
+\end{verbatim}
+The expressions are evaluated in left-to-right order.  Every block has
+at least one expression; the value of a block is the value of the last
+expression.  The expressions of a block may have any static types.
+The static type of a block is the static type of the last expression.
+
+An occasional source of confusion in Cool is the use of semi-colons.
+Semi-colons are used as terminators in lists of expressions
+(e.g., the block syntax above) and in no other places; see Section~\ref{sec-gram}.
+
+\subsection{Let}
+A let expression has the form
+\begin{verbatim}
+let <id1> : <type1> [ <- <expr1> ], ..., <idn> : <typen> [ <- <exprn> ] in <expr> end
+\end{verbatim}
+
+The optional expressions are {\em initialization}; the other
+expression is the {\em body}.
+A {\tt let} is evaluated as follows.
+First {\tt <expr1>} is evaluated and the result bound to {\tt <id1>}.
+Then {\tt <expr2>} is evaluated and the result bound to {\tt <id2>},
+and so on, until all of the variables in the
+{\tt let} are initialized.  (If the initialization of {\tt <idk>} is
+omitted, the default initialization of type {\tt <typek>} is used.)
+Next the body of the {\tt let} is evaluated.
+The value of the {\tt let} is the value of the body.
+
+The {\tt let} identifiers {\tt <id1>,\ldots,<idn>} are visible in the
+body of the {\tt let}.  Furthermore, identifiers {\tt <id1>,\ldots,<idk>} are
+visible in the initialization of {\tt <idm>} for any {\tt m > k}.
+
+If an identifier is defined multiple times in a {\tt let}, later
+bindings hide earlier ones.  Identifiers introduced by {\tt let} also
+hide any definitions for the same names in containing scopes.
+Every {\tt let} expression must introduce at least one identifier.
+
+The type of an initialization expression must conform to
+the declared type of the identifier.  The type of {\tt let} is the type
+of the body.
+
+\subsection{Case}
+A case expression has the form
+\begin{verbatim}
+case <expr0> of 
+    <id1> : <type1> => <expr1>; 
+    . . .
+    <idn> : <typen> => <exprn>; 
+esac
+\end{verbatim}
+Case expressions provide runtime type tests on objects. 
+First, {\tt expr0} is evaluated and its dynamic type {\tt C} noted
+(if {\tt expr0} evaluates to {\tt void} a run-time error is produced).
+Next, from among the branches the branch with the least type
+{\tt <typek>} such that {\tt C $\leq$ <typek>} is selected. The identifier
+{\tt <idk>} is bound to the
+value of {\tt <expr0>} and the expression {\tt <exprk>} is evaluated.
+The result of the {\tt case} is the value of {\tt <exprk>}.
+If no branch can be selected for evaluation, a run-time error is generated.
+Every {\tt case} expression must have at least one branch.
+
+%The declared type {\tt <typei>} of
+%each branch should conform to the static type of {\tt <expr0>}.
+%If the type does not conform, a compiler warning is printed that the branch is
+%``dead code'' and can never be executed at runtime.
+
+For each branch, let $\tt T_i$ be the static type of {\tt <expri>}.
+The static type of a {\tt case} expression is $\tt \bigsqcup_{1 \leq i \leq
+n} T_i$.
+The identifier {\tt id} introduced by a branch of a {\tt case} hides any 
+variable or attribute definition for {\tt id} visible in the containing scope.
+
+The {\tt case} expression has no special construct for a ``default'' or
+``otherwise'' branch.  The same affect is achieved by including a branch
+\begin{verbatim}
+   x : Object => ...
+\end{verbatim}
+because every type is $\leq$ to {\tt Object}.
+
+The {\tt case} expression provides programmers a way to insert explicit
+runtime type checks in situations where static types inferred by
+the type checker are too conservative.  A typical
+situation is that a programmer writes an expression $\tt e$ and type
+checking infers that $\tt e$ has static type $\tt A$.  However, the programmer
+may know that, in fact, the dynamic type of $\tt e$ is always $\tt B$ for
+some $\tt B \leq A$.  This information can be captured
+using a case expression:
+\begin{verbatim}
+case e of x : B => ...
+\end{verbatim}
+In the branch the variable $\tt x$ is bound to the value of $\tt e$ but
+has the more specific static type $\tt B$.
+
+\subsection{New}
+A {\tt new} expression has the form
+\begin{verbatim}
+new <type> 
+\end{verbatim}
+The value is a fresh object of the appropriate class.
+If the type is \styp, then the value is a fresh object of the
+class of {\tt self} in the current scope.
+The static type is {\tt <type>}.
+
+
+\subsection{Isvoid}
+\label{sec-isvoid}
+
+The expression
+\begin{verbatim}
+isvoid expr
+\end{verbatim}
+evaluates to {\tt true} if {\tt expr} is {\tt void} and evaluates
+to {\tt false} if {\tt expr} is not {\tt void}.
+
+
+\subsection{Arithmetic and Comparison Operations}
+
+Cool has four binary arithmetic operations: {\tt +, -, *, /}.
+The syntax is
+\begin{verbatim}
+expr1 <op> expr2
+\end{verbatim}
+To evaluate such an expression first {\tt expr1} is evaluated and
+then {\tt expr2}.  The result of the operation is the result of the
+expression.
+
+The static types of the two sub-expressions must be {\tt Int}.
+The static type of the expression is {\tt Int}.
+Cool has only integer division.
+
+Cool has three comparison operations: {\tt <, <=, =}.
+For {\tt <} and {\tt <=} the rules are exactly the same as
+for the binary arithmetic operations, except that the result
+is a {\tt Bool}.  The comparison {\tt =} is a special case.
+If either {\tt <expr1>} or {\tt <expr2>} has static type {\tt Int},
+{\tt Bool}, or {\tt String}, then the other must have the same static type.
+Any other types, including \styp, may be freely compared. 
+On non-basic objects, equality simply checks for pointer equality (i.e.,
+whether the memory addresses of the objects are the same).  Equality
+is defined for {\tt void}.
+
+In principle, there is nothing wrong with permitting equality
+tests between, for example, {\tt Bool} and {\tt Int}.  However, such a test
+must always be false and almost certainly indicates some sort of
+programming error.  The Cool type checking rules catch such errors
+at compile-time instead of waiting until runtime.
+
+Finally, there is one arithmetic and one logical unary operator.
+The expression {\tt \~{ }<expr>} is the integer complement of {\tt <expr>}.
+The expression {\tt <expr>} must have static type {\tt Int} and the entire
+expression has static type {\tt Int}.
+The expression {\tt not <expr>} is the boolean complement of {\tt <expr>}.
+The expression {\tt <expr>} must have static type {\tt Bool} and the entire
+expression has static type {\tt Bool}.
+
+\section{Basic Classes}
+\label{sec-basic}
+
+\subsection{Object}
+The {\tt Object} class is the root of the inheritance graph.
+Methods with the following declarations are defined:
+\begin{verbatim}
+abort() : Object
+type_name() : String
+copy() : SELF_TYPE
+\end{verbatim}
+The method {\tt abort} halts program execution with an error message.
+The method {\tt type\_name} returns a string with the name of the class
+of the object.
+The method {\tt copy} produces a {\em shallow} copy of the object.\footnote{A shallow copy of $a$ copies $a$ itself, but does not recursively
+copy objects that $a$ points to.}
+
+\subsection{IO}
+The {\tt IO} class provides the following methods for performing simple input and output
+operations:
+\begin{verbatim}
+out_string(x : String) : SELF_TYPE
+out_int(x : Int) : SELF_TYPE
+in_string() : String
+in_int() : Int
+\end{verbatim}
+The methods {\tt out\_string} and {\tt out\_int} print their argument and return
+their {\tt self} parameter.  The method {\tt in\_string} reads a string from 
+the standard input, up to but not including a newline character.  The method
+{\tt in\_int} reads a single integer, which may be preceded by whitespace.
+Any characters following the integer, up to and including the next newline,
+are discarded by {\tt in\_int}.
+
+A class can make use of the methods in the {\tt IO} class by inheriting
+from {\tt IO}.  It is an error to redefine the {\tt IO} class.
+
+\subsection{Int}
+\label{sec-int}
+
+The {\tt Int} class provides integers.  There are no methods special
+to {\tt Int}.  The default initialization for variables of type {\tt
+Int} is 0 (not {\tt void}). It is an error to inherit from or redefine
+{\tt Int}.
+
+\subsection{String}
+The {\tt String} class provides strings.  The following methods are defined:
+\begin{verbatim}
+length() : Int
+concat(s : String) : String
+substr(i : Int, l : Int) : String
+\end{verbatim}
+The method {\tt length} returns the length of the {\tt self} parameter.
+The method {\tt concat} returns the string formed by concatenating
+{\tt s} after {\tt self}.  The method {\tt substr} returns the 
+substring of its {\tt self} parameter beginning at position {\tt i }
+with length {\tt l}; string positions are numbered beginning at 0.
+A runtime error is generated if the specified
+substring is out of range.  
+
+The default initialization for variables of type {\tt String} is {\tt
+""} (not {\tt void}).  It is an error to inherit from or redefine {\tt
+String}.
+
+\subsection{Bool}
+\label{sec-bool}
+
+The {\tt Bool} class provides {\tt true} and {\tt false}.  
+The default initialization for variables of type {\tt Bool} is {\tt false}
+(not {\tt void}).
+It is an error to inherit from or redefine {\tt Bool}.
+
+\section{Main Class}
+\label{sec-main}
+
+Every program must have a class {\tt Main}.
+Furthermore, the {\tt Main} class must have a method {\tt main}
+that takes no formal parameters.  A program is executed by
+evaluating {\tt (new Main).main()}.
+
+The remaining sections of this manual provide a more formal definition
+of Cool.  There are four sections covering lexical structure (Section~\ref{lex-struct}), grammar (Section~\ref{sec-gram}), type rules (Section~\ref{sec-typrules}),
+and operational semantics (Section~\ref{sec-opsem}).
+
+\section{Lexical Structure}
+\label{lex-struct}
+
+The lexical units of Cool are integers, type
+identifiers, object identifiers, special notation, strings, keywords,
+and white space.
+
+\subsection{Integers, Identifiers, and Special Notation}
+
+Integers are non-empty strings of digits 0-9.  
+Identifiers are strings (other than keywords) consisting of letters,
+digits, and the underscore character.  Type identifiers begin with a
+capital letter; object identifiers begin with a lower case letter.
+There are two other identifiers,
+{\bf self} and {\bf SELF\_TYPE} that are treated specially by Cool but are not
+treated as keywords.  The special syntactic symbols (e.g., parentheses, assignment
+operator, etc.) are given in Figure~\ref{fig1}.
+
+\subsection{Strings}
+
+Strings are enclosed in double quotes {\tt "\ldots"}.  Within a string, a
+sequence `$\rm \backslash c$' denotes the character `c', with the exception of
+the following: \\[.1in]
+\begin{tabular}{rl}
+$\rm \backslash b$ & backspace \\
+$\rm \backslash t$ & tab \\
+$\rm \backslash n$ & newline \\
+$\rm \backslash f$ & formfeed
+\end{tabular} \\[.1in]
+
+A non-escaped newline character may not appear in a string:
+\begin{verbatim}
+"This is not
+OK"
+\end{verbatim}
+A string may not contain null (character {\tt $\backslash 0$}).
+Any other character may be included
+in a string.
+Strings cannot cross file boundaries.
+
+\subsection{Comments}
+
+There are two forms of comments in Cool.  Any characters between two
+dashes `` -- --'' and the next newline (or EOF, if there is no next
+newline) are treated as comments.  Comments may also be written by
+enclosing text in $(\ast \ldots \ast )$.  The latter form of comment
+may be nested.  Comments cannot cross file boundaries.
+
+\subsection{Keywords}
+
+The keywords of cool are:
+{\bf begin, class, else, end, false, fi, if, in, inherits, is, isvoid, let, loop, 
+pool, then, while, case, esac, new, of, not, true.}  Except for the constants
+{\bf true} and {\bf false}, keywords are case insensitive.  To conform to
+the rules for other objects, the first letter of {\bf true} and {\bf false}
+must be lowercase; the trailing letters may be upper or lower case.
+
+\subsection{White Space}
+
+White space consists of any sequence of the characters: blank, newline, $\tt 
+\backslash b, \backslash f, \backslash r, \backslash t, \backslash v$.
+\section{Cool Syntax}
+\label{sec-gram}
+
+
+\begin{figure}
+\begin{eqnarray*}
+\nt{program} & \grammar & \nt{class};^{+} \\
+\nt{class} & \grammar & \kw{class} \s \tm{TYPE} \s [ \kw{inherits} \s \tm{TYPE} ] \s \kw{is} \s \nt{feature};^{\ast} \kw{end} \\
+\nt{feature} & \grammar & \tm{ID}( \nt{formal},^{\ast} ) : \tm{TYPE} \s \kw{is}
+   \s \nt{expr} \s \kw{end} \\
+& \gor & \tm{ID} : \tm{TYPE} \s [ \assgn \nt{expr} \s ] \\
+\nt{formal} & \grammar & \tm{ID} : \tm{TYPE} \\
+\nt{expr} & \grammar & \tm{ID} \assgn \nt{expr} \\
+ & \gor & \nt{expr}[@\tm{TYPE}].\tm{ID}(\nt{expr},^{\ast}) \\
+ & \gor & \tm{ID}(\nt{expr},^{\ast}) \\
+& \gor & \kw{if} \s \nt{expr} \s \kw{then} \s \nt{expr} \s \kw{else} \s \nt{expr} \s \kw{fi}  \\
+& \gor & \kw{while} \s \nt{expr} \s \kw{loop} \s \nt{expr} \s \kw{pool} \\
+& \gor & \kw{begin} \s \nt{expr};^+ \kw{end} \\
+& \gor & \kw{let} \s \{ \tm{ID} : \tm{TYPE} \s [ \assgn \nt{expr} \s ],\}^+ \s \kw{in} \s
+	\nt{expr} \s  \kw{end} \\
+& \gor & \kw{case} \s \nt{expr} \s \kw{of} \s 
+		\{ \tm{ID} : \tm{TYPE} => \nt{expr}; \}^+
+	 \kw{esac} \\
+& \gor & \kw{new} \s \tm{TYPE} \\
+& \gor & \kw{isvoid} \s \nt{expr} \\
+& \gor & \nt{expr} \,+\, \nt{expr} \\
+& \gor & \nt{expr} \,-\, \nt{expr} \\
+& \gor & \nt{expr} \,\ast\, \nt{expr} \\
+& \gor & \nt{expr} \,/\, \nt{expr} \\
+& \gor & \m{\~{ }}\nt{expr} \\
+& \gor & \nt{expr} < \nt{expr} \\
+& \gor & \nt{expr} <= \nt{expr} \\
+& \gor & \nt{expr} = \nt{expr} \\
+& \gor & \kw{not} \s \nt{expr} \\
+& \gor & (\nt{expr}) \\
+& \gor & \tm{ID} \\
+& \gor & \m{integer} \\
+& \gor & \m{string} \\
+& \gor & \kw{true} \\
+& \gor & \kw{false}
+\end{eqnarray*}
+\caption{Cool syntax.}
+\label{fig1}
+\end{figure}
+
+Figure~\ref{fig1} provides a specification of Cool syntax.  The
+specification is not context-free; for convenience, we also use some
+regular expression notation.  Specifically, $A^{\ast}$ means zero or
+more $A$'s in succession; $A^+$ means one or more $A$'s.  The special
+notation $A;^{\ast}$ means zero or more $A$'s terminated by
+semicolons.  The special notation $A,^{\ast}$ means zero or more $A$'s
+separated by commas.  Separators differ from terminators in that the
+terminator always appears at the end of the list; a separator is never
+included at the end of a list.  In Cool, semicolons are always
+terminators and commas are always separators.  Items in square brackets
+$[\ldots]$ are optional.  Curly braces are not part of Cool; they are
+used in the grammar as a meta-symbol to show association of grammar
+operations.
+
+\subsection{Precedence}
+The precedence of infix binary and prefix unary operations, 
+from highest to lowest, is given by
+the following table:
+\begin{verbatim}
+.
+@
+~
+isvoid
+* /
++ -
+<=  <  =
+not
+<-
+\end{verbatim}
+All binary operations are left-associative, with the exception of 
+assignment, which is right-associative, and the three comparison operations,
+which do not associate.
+
+\section{Type Rules}
+\label{sec-typrules}
+
+This section formally defines the type rules of Cool.
+The type rules define the type of every Cool expression 
+in a given context.  The context is the {\em type environment},
+which describes the type of every unbound identifier appearing in an
+expression.  The type environment is described in Section~\ref{sec-typenv}.
+Section~\ref{sec-typr} gives the type rules.
+
+\subsection{Type Environments}
+\label{sec-typenv}
+
+To a first approximation, type checking in Cool can be thought of as
+a bottom-up algorithm: the type of an expression $e$ is computed from the
+(previously computed) types of $e$'s subexpressions.  For example,
+an integer {\tt 1} has type {\tt Int}; there are no subexpressions in
+this case.  As another example, if $\tt e_n$ has type $\tt X$, then
+the expression $\tt \m{\tt begin}\ e_1; \ldots; e_n\ \m{\tt end}$ has 
+type $\tt X$.
+
+A complication arises in the case of an expression $\tt v$, where $\tt
+v$ is an object identifier.  It is not possible to say what the type of $\tt
+v$ is in a strictly bottom-up algorithm; we need to know the type
+declared for $\tt v$ in the larger expression.  Such a declaration
+must exist for every object identifier in valid Cool programs.
+
+To capture information about the types of identifiers, we use a
+{\em type environment}.  The environment consists of three parts:
+a method environment $M$, an object environment $O$, and 
+the name of the current class in which the expression appears.  
+The method environment and object environment are both functions (also
+called {\em mappings}).  The object environment is a function of the
+form
+\[  O(v) = T \]
+which assigns the type $ T$ to object identifier $ v$.
+The method environment is more complex; it is a function of the form
+\[  M(C,f) = (T_1,\ldots,T_{n-1},T_n) \]
+where $ C$ is a class name (a type), $f$ is a method name,
+and $ t_1,\ldots,t_n$ are types.  The tuple of types is
+the {\em signature} of the method.  The interpretation of signatures is
+that in class $ C$ the method $ f$ has formal parameters of
+types $ (t_1,\ldots,t_{n-1})$---in that order---and a return type $t_n$.
+
+
+Two mappings are required instead of one because object names and method
+names do not clash---i.e., there may be a method and an object identifier
+of the same name.
+
+The third component of the type environment is the name of the current
+class, which is needed for type rules involving {\tt SELF\_TYPE}.
+
+Every expression $e$ is type checked in a type environment;
+the subexpressions of $e$ may be type checked in the same environment or,
+if $e$ introduces a new object identifier, in a modified environment.
+For example, consider the expression
+\begin{center}
+\protect\begin{verbatim}
+  let c : Int <- 33 in
+    ...
+  end
+\end{verbatim}
+\end{center}
+The \C{let} expression introduces a new variable {\tt c} with type {\tt Int}.
+Let $O$ be the object component of the type environment for the \C{let}.
+Then the body of the \C{let} is type checked in the object type environment
+\[ O[Int/c] \]
+where the notation $O[T/c]$ is defined as follows:
+\begin{eqnarray*}
+O[T/c](c) & = & T \\
+O[T/c](d) & = & O(d)\ \ \mif d \neq c
+\end{eqnarray*}
+
+\subsection{Type Checking Rules}
+\label{sec-typr}
+
+The general form a type checking rule is:
+$$
+\tcrule{\vdots}{O,M,C \vdash e : T}{}
+$$ 
+The rule should be read: In the type environment for objects $O$,
+methods $M$, and containing class $C$, the expression $e$ has type
+$T$.  The dots above the horizontal bar stand for other statements
+about the types of sub-expressions of $e$.  These other statements are
+hypotheses of the rule; if the hypotheses are satisfied, then the
+statement below the bar is true.
+
+The rule for object identifiers is simply that if the environment
+assigns an identifier $ Id $ type $T$, then $ Id $ has type $T$.
+$$
+\tcrule{O(Id) = T}{O,M,C \vdash Id : T}{[Var]}
+$$
+
+The rule for assignment to a variable is more complex:
+$$
+\tcrule{\begin{array}{l}
+	O(Id) = T \\
+	O,M,C \vdash e_1 : T' \\
+	T' \leq T
+	\end{array}}
+       {O,M,C \vdash Id \leftarrow e_1 : T'}
+       {[ASSIGN]}
+$$
+Note that this type rule---as well as others---use the conformance relation
+$\leq$ (see Section~\ref{sec-inherit}).
+The rule says that the assigned expression $e_1$ must have a type $T'$ that
+conforms to the type $T$ of the identifier $ Id $ in the type environment.
+The type of the whole expression is $T'$.
+
+The type rules for constants are all easy:
+$$
+\tcrule{}
+       {O,M,C \vdash true : Bool}
+       {[True]}
+$$
+
+$$
+\tcrule{}
+       {O,M,C \vdash false : Bool}
+       {[False]}
+$$
+
+$$
+\tcrule{i \m{\ is an integer constant}}
+       {O,M,C \vdash i : Int}
+       {[Int]}
+$$
+
+$$
+\tcrule{s \m{\ is a string constant}}
+       {O,M,C \vdash s : String}
+       {[String]}
+$$
+
+There are two cases for \C{new}, one for {\tt new SELF\_TYPE} and
+one for any other form:
+$$
+\tcrule{
+T' = \left\{
+	\begin{array}{rl}
+		{\tt SELF\_TYPE}_C & \mif T = {\tt SELF\_TYPE} \\
+		T & \ow
+	\end{array}
+     \right.}
+{O,M,C \vdash new\ T: T'}
+{[New]}
+$$
+
+Dispatch expressions are the most complex to type check.
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_0 : T_0 \\
+O,M,C \vdash e_1 : T_1 \\
+\vdots \\
+O,M,C \vdash e_n : T_n \\
+T_0' = \left\{ 
+	\begin{array}{rl}
+		C & \m{\ if\ } T_0 = \m{\tt SELF\_TYPE}_C \\
+		T_0 & \m{otherwise}
+	\end{array}
+	\right. \\
+M(T_0',f) = (T_1',\ldots,T_n',T_{n+1}') \\
+T_i \leq T_i'\ \ \ 1 \leq i \leq n \\
+T_{n+1} = \left\{ 
+	\begin{array}{rl}
+		T_0 & \m{\ if\ } T_{n+1}' = \m{\tt SELF\_TYPE} \\
+		T_{n+1}' & \m{otherwise}
+	\end{array}
+	\right.
+\end{array}
+}
+{O,M,C \vdash e_0.f(e_1,\ldots,e_n) : T_{n+1}}
+{[Dispatch]}
+$$
+
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_0 : T_0 \\
+O,M,C \vdash e_1 : T_1 \\
+\vdots \\
+O,M,C \vdash e_n : T_n \\
+T_0 \leq T \\
+M(T,f) = (T_1',\ldots,T_n',T_{n+1}') \\
+T_i \leq T_i'\ \ \ 1 \leq i \leq n \\
+T_{n+1} = \left\{ 
+	\begin{array}{rl}
+		T_0 & \m{\ if\ } T_{n+1}' = \m{\tt SELF\_TYPE} \\
+		T_{n+1}' & \m{otherwise}
+	\end{array}
+	\right.
+\end{array}
+}
+{O,M,C \vdash e_0@T.f(e_1,\ldots,e_n) : T_{n+1}}
+{[StaticDispatch]}
+$$
+
+
+To type check a dispatch, each of the subexpressions must
+first be type checked.  The type $T_0$ of $e_0$ determines the
+which declaration of the method $f$ is used.  The argument types of the
+dispatch must conform to the declared argument types.  Note that the
+type of the result of the dispatch is either the declared return type
+or $T_0$ in the case that the declared return type is $\tt SELF\_TYPE$.
+The only difference in type checking a static dispatch is that the
+class $T$ of the method $f$ is given in the dispatch, and the type
+$T_0$ must conform to $T$.
+
+The type checking rules for \C{if} and \C{begin}-\C{end}
+expressions are straightforward.  See Section~\ref{sec-cond} for
+the definition of the $\sqcup$ operation. 
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_1 : Bool \\
+O,M,C \vdash e_2 : T_2 \\
+O,M,C \vdash e_3 : T_3
+\end{array}}
+{O,M,C \vdash \m{if } e_1 \m{ then } e_2 \m{ else } e_3 \m{ fi} : T_2 \sqcup T_3}
+{[If]}
+$$
+
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_1 : T_1 \\
+O,M,C \vdash e_2 : T_2 \\
+\vdots \\
+O,M,C \vdash e_n : T_n 
+\end{array}}
+{O,M,C \vdash \m{begin } e_1; e_2; \ldots e_n; \m{ end} : T_n}
+{[Sequence]}
+$$
+
+The \C{let} rule has some interesting aspects.
+$$
+\tcrule{
+\begin{array}{l}
+T_0' = \left\{
+	\begin{array}{rl}
+		{\tt SELF\_TYPE}_C & \mif\ T_0 = {\tt SELF\_TYPE} \\
+		T_0 & \ow
+	\end{array}
+	\right. \\
+O,M,C \vdash e_1 : T_1 \\
+T_1 \leq T_0' \\
+O[T_0'/x],M,C \vdash e_2 : T_2 
+\end{array}}
+{O,M,C \vdash \m{let } x : T_0 \leftarrow e_1 \m{ in } e_2 \m{ end}: T_2}
+{[Let-Init]}
+$$
+First, the initialization $e_1$ is type checked in an environment
+without a definition for $x$.  Thus, the variable $x$ cannot be used
+in $e_1$ unless it already has a definition in an outer scope.
+Second, the body $e_2$ is type checked in the environment $O$ extended
+with the typing $x:T_0'$.
+Third, note that the type of $x$ may be {\tt SELF\_TYPE}.
+
+$$
+\tcrule{
+\begin{array}{l}
+T_0' = \left\{
+	\begin{array}{rl}
+		{\tt SELF\_TYPE}_C & \mif\ T_0 = {\tt SELF\_TYPE} \\
+		T_0 & \ow
+	\end{array}
+	\right. \\
+O[T_0'/x],M,C \vdash e_1 : T_1 
+\end{array}}
+{O,M,C \vdash \m{let } x : T_0 \m{ in } e_1 \m{ end} : T_1}
+{[Let-No-Init]}
+$$
+The rule for \C{let} with no initialization simply omits the conformance
+requirement.  We give
+type rules only for a \C{let} with a single variable.
+Typing a multiple \C{let}
+\[ \rm let\ x_1 : T_1\ [\leftarrow e_1],\ x_2: T_2\ [\leftarrow e2], \ldots,\ x_n :T_n\ [\leftarrow e_n]\ in\ e\ end \]
+is defined to be the same as typing
+\[
+\rm let\ x_1 : T_1\ [\leftarrow e_1]\ in\ (let\ x_2 :T_2\ [\leftarrow e_2],\ldots,\ x_n : T_n\ [\leftarrow e_n]\ in\ e\ end)\ end
+\]
+
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_0 : T_0 \\
+O[T_1/x_1], M, C \vdash e_1 : T_1' \\
+\vdots \\
+O[T_n/x_n], M, C \vdash e_n : T_n'
+\end{array}}
+{O,M,C \vdash \m{case } e_0 \m{ of } x_1:T_1 \Rightarrow e_1; \ldots
+				     x_n:T_n \Rightarrow e_n; \m{ esac} :
+	\bigsqcup_{1 \leq i \leq n} T_i'}
+{[Case]}
+$$
+
+Each branch of a \C{case} is type checked in an environment where
+variable $x_i$ has type $T_i$.  The type of the entire \C{case} is
+the join of the types of its branches.  The variables declared on 
+each branch of a \C{case} must all have distinct types.
+
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_1 : Bool \\
+O,M,C \vdash e_2: T_2 
+\end{array}}
+{O,M,C \vdash \m{while } e_1 \m{ loop } e_2 \m{ pool} : Object}
+{[Loop]}
+$$
+The predicate of a loop must have type $Bool$; the type of the entire
+loop is always $Object$. An \C{isvoid} test has type $Bool$:
+$$
+\tcrule{O,M,C \vdash e_1 : T_1}
+{O,M,C \vdash \m{isvoid } e_1 : Bool}
+{[Isvoid]}
+$$
+
+With the exception of the rule for equality,
+the type checking rules for the primitive
+logical, comparison, and arithmetic operations are easy.
+$$
+\tcrule{
+O,M,C \vdash e_1 : Bool}
+{O,M,C \vdash \neg e_1 : Bool}
+{[Not]}
+$$
+
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_1 : Int \\
+O,M,C \vdash e_2 : Int \\
+op \in \{ <, \leq \}
+\end{array}}
+{O,M,C \vdash e_1\ op\  e_2 : Bool}
+{[Compare]}
+$$
+
+$$
+\tcrule{
+O,M,C \vdash e_1 : Int}
+{O,M,C \vdash \mbox{\~{}} e_1 : Int}
+{[Neg]}
+$$
+
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_1 : Int \\
+O,M,C \vdash e_2 : Int \\
+op \in \{ \ast,+,-,/ \}
+\end{array}}
+{O,M,C \vdash e_1\ op\  e_2 : Int}
+{[Arith]}
+$$
+
+The wrinkle in the rule for equality is that any types may be
+freely compared except {\tt Int, String} and {\tt Bool}, which
+may only be compared with objects of the same type.
+$$
+\tcrule{
+\begin{array}{l}
+O,M,C \vdash e_1 : T_1 \\
+O,M,C \vdash e_2 : T_2 \\ 
+T_1 \in \{ Int, String, Bool \} \Or T_2 \in \{ Int, String, Bool \} \Rightarrow T_1 = T_2
+\end{array}}
+{O,M,C \vdash e_1 = e_2 : Bool}
+{[Equal]}
+$$
+
+The final cases are type checking rules for attributes and methods.
+For a class $C$, let the object environment $O_C$ give the types of all
+attributes of $C$ (including any inherited attributes).  More formally,
+if $x$ is an attribute (inherited or not) of $C$, and the declaration of
+$x$ is $x:T$, then
+\[ O_C(x) = \left\{
+	\begin{array}{rl}
+		{\tt SELF\_TYPE}_C & \mif\ T = {\tt SELF\_TYPE} \\
+		T & \ow
+	\end{array}
+	\right.
+\]
+
+The method environment $M$ is global to the entire program and defines
+for every class $C$ the signatures of all of the methods of $C$
+(including any inherited methods).
+
+The two rules for type checking attribute defininitions are similar
+the rules for \C{let}.  The essential difference is that
+attributes are visible within their initialization expressions.  
+Note that {\tt self} is bound in the initialization.
+$$
+\tcrule{
+\begin{array}{l}
+O_C(x) = T_0 \\
+O_C[{\tt SELF\_TYPE}_C/\m{\em self}],M,C \vdash e_1 : T_1 \\
+T_1 \leq T_0 \\
+\end{array}}
+{O_C,M,C \vdash x : T_0 \leftarrow e_1;}
+{[Attr-Init]}
+$$
+
+$$
+\tcrule{O_C(x) = T}
+{O_C,M,C \vdash x : T;}
+{[Attr-No-Init]}
+$$
+
+The rule for typing methods checks the body of the method in an
+environment where $O_C$ is extended with bindings for the formal
+parameters and {\tt self}. The type of the method body must conform to
+the declared return type.
+
+$$
+\tcrule{
+\begin{array}{l}
+M(C,f) = (T_1,\ldots,T_n,T_0) \\
+O_C[{\tt SELF\_TYPE}_C/\m{\em self}][T_1/x_1]\ldots[T_n/x_n], M, C \vdash e : T_0' \\
+T_0' \leq \left\{
+		\begin{array}{rl}
+			{\tt SELF\_TYPE}_C & \mif T_0 = {\tt SELF\_TYPE} \\
+			T_0 & \ow
+		\end{array}
+	  \right.
+\end{array}}
+{O_C,M,C \vdash f(x_1:T_1,\ldots,x_n:T_n) : T_0 \m{ is } e \m{ end; }}
+{[Method]}
+$$
+
+\section{Operational Semantics}
+\label{sec-opsem}
+
+This section contains a mostly formal presentation of the operational
+semantics for the Cool language. The operational semantics define for
+every Cool expression what value it should produce in a given context.
+The context has three components: an environment, a store, and a self
+object. These components are described in the next section. Section
+\ref{objectsyntax} defines the syntax used to refer to Cool
+objects, and Section \ref{classdefs} defines the syntax used to refer to
+class definitions.
+
+Keep in mind that a formal semantics is a specification only---it does
+not describe an implementation.  The purpose of presenting the formal
+semantics is to make clear all the details of the behavior of Cool 
+expressions.  How this behavior is implemented is another matter.
+
+\subsection{Environment and the Store}
+
+Before we can present a semantics for Cool we need a number
+of concepts and a considerable amount of notation.
+An {\em environment} is a mapping of variable identifiers to
+{\em locations}.  Intuitively, an environment tells us for a given
+identifier the address of the memory location where that identifier's
+value is stored.  For a given expression, the environment must
+assign a location to all identifiers to which the expression may refer.
+ For the expression, e.g., $a + b$, we need an environment that maps
+$a$ to some location and $b$ to some location. We'll use the following syntax
+to describe environments, which is very similar to the syntax of type
+assumptions used in Section~\ref{sec-typrules}.
+\[
+	E = [ a:l_1, b:l_2]
+\]
+This environment maps $a$ to location $l_1$, and $b$ to location
+$l_2$.
+
+The second component of the context for the evaluation of an
+expression is the {\em store}. The store maps locations to values,
+where values in Cool are just objects.  Intuitively, a store
+tells us what value is stored in a given memory location.
+For the moment, assume all values are integers.
+A store is similar to an environment:
+\[
+	S = [ l_1\rightarrow 55, l_2\rightarrow 77 ]
+\]
+This store maps location $l_1$ to value $55$ and location $l_2$
+to value $77$.
+
+Given an environment and a store, the value of an
+identifier can be found by first looking up the location that the identifier maps
+to in the environment and then looking up the location in the store. 
+\[
+\begin{array}{rcl}
+	E(a) &=& l_1 \\
+	S(l_1) & = & 55
+\end{array}
+\]
+
+Together, the environment and the store define the execution state at
+a particular step of the evaluation of a Cool expression. The double
+indirection from identifiers to locations to values allows us to model
+variables. Consider what happens if the value $99$ is assigned
+variable $a$ in the environment and store defined above. Assigning to a
+variable means changing the value to which it refers but not its
+location. To perform the assignment, we look up the location for
+$a$ in the environment $E$ and then change the mapping for the
+obtained location to the new value, giving a new store $S'$.
+
+\[
+\begin{array}{rcl}
+	E(a) & = & l_1 \\
+	S'   & = & S[99/l_1]
+\end{array}
+\]
+The syntax $S[v/l]$ denotes a new store that is identical to
+the store $S$, except that $S'$ maps location $l$ to value
+$v$. For all locations $l'$ where $l'\not=l$, we still have
+$S'(l')=S(l')$.
+
+
+The store models the contents of memory of the computer during program execution.
+Assigning to a variable modifies the store.
+
+There are also situations in which the environment is modified.
+Consider the following Cool fragment:
+
+\begin{center}
+\begin{verbatim}
+  let c : Int <- 33 in
+    c
+  end
+\end{verbatim}
+\end{center}
+
+When evaluating this expression, we must introduce the new
+identifier $c$ into the environment before evaluating the body of
+the \C{let}. If the current environment and state are $E$ and
+$S$, then we create a new environment $E'$ and a new store $S'$
+defined by:
+\[
+\begin{array}{rcl}
+	l_c & = & newloc(S)\\
+	E' & = & E[l_c/c]\\
+	S' & = & S[33/l_c]
+\end{array}
+\]
+The first step is to allocate a location for the variable $c$.  The
+location should be fresh, meaning that the current store does not have
+a mapping for it. The function $newloc()$ applied to a store gives us
+an unused location in that store. We then create a new environment
+$E'$, which maps $c$ to $l_c$ but also contains all of the mappings of
+$E$ for identifiers other than $c$. Note that if $c$ already has a
+mapping in $E$, the new environment $E'$ hides this old mapping.  We
+must also update the store to map the new location to a value. In this
+case $l_c$ maps to the value $33$, which is the initial value for $c$
+as defined by the let-expression.  
+
+The example in this subsection oversimplifies Cool environments and
+stores a bit, because simple integers are not Cool values.
+Even integers are full-fledged objects in Cool.
+
+
+\subsection{Syntax for Cool Objects}
+\label{objectsyntax}
+Every Cool value is an object.
+ Objects contain a list of
+named attributes, a bit like records in C.  In addition, each object belongs to a class. We use
+the following syntax for values in Cool:
+\[
+	v = X(a_1=l_1,a_2=l_2,\ldots,a_n=l_n)
+\]
+Read the syntax as follows: The value $v$ is a member of class $X$ containing the attributes
+$a_1, \ldots, a_n$ whose locations are $l_1, \ldots, l_n$. Note that
+the attributes have an associated location. Intuitively this means
+that there is some space in memory reserved for each attribute.
+
+For base objects of Cool (i.e., \C{Int}s, \C{String}s, and \C{Bool}s) we use a
+special case of the above syntax. Base objects have a class
+name, but their attributes are not like attributes of normal
+classes, because they cannot be modified. Therefore, we describe
+base objects using the following syntax:
+
+\[
+\begin{array}{l}
+	Int(5)\\
+	Bool(true)\\
+	String(4,\dq Cool \dq)
+\end{array}
+\]
+
+For \C{Int}s and \C{Bool}s, the meaning is obvious. \C{String}s contain two
+parts, the length and the actual sequence of ASCII characters.
+
+\subsection{Class definitions}
+\label{classdefs}
+In the rules presented in the next section, we need a way to refer to
+the definitions of attributes and methods for classes. 
+Suppose we have the following Cool class
+definition:
+\begin{verbatim}
+   class B is
+      s : String <- "Hello";
+      g (y:String) : Int is
+         y.concat(s)
+      end;
+      f (x:Int) : Int is
+         x+1
+      end;
+   end;
+
+   class A inherits B is
+      a : Int;
+      b : B <- new B;
+      f(x:Int) : Int is
+         x+a
+      end;
+   end;
+\end{verbatim}
+
+Two mappings, called {\em class} and {\em implementation}, are associated 
+with class definitions.  The {\em class} mapping is
+used to get the attributes, as well as their types and initializations, of a
+particular class:
+\[
+	class(A) = (s : String \leftarrow \dq Hello \dq,\ a : Int
+\leftarrow 0,\ b : B \leftarrow new\ B)
+\]
+Note that the information for class $A$ contains everything that it
+inherited from class $B$, as well as its own definitions. If $B$ had
+inherited other attributes, those attributes would also appear in the information
+for $A$. The attributes are listed in the order they are inherited
+and then in source order:
+all the attributes from the greatest ancestor are listed first in the
+order in which they textually appear, then the attributes of the next greatest
+ancestor, and so on, on down to the attributes defined in the particular class.
+We rely on this order in describing how new objects are initialized.
+
+The general form of a class mapping is:
+\[
+	\classmap{X}{\attr{a_1}{T_1}{e_1},\ \ldots,\ \attr{a_n}{T_n}{e_n}}
+\]
+Note that every attribute has an initializing expression, even if the
+Cool program does not specify one for each attribute. The default
+initialization for a variable or attribute is the {\em default} of
+its type.  The default of {\tt Int} is 0, the default of {\tt String} 
+is $\dq\dq$, the default of {\tt Bool} is {\tt false}, and the default
+of any other type is {\tt void}.\footnote{A tiny point: We are
+allowing {\tt void} to be used as an expression here.  There is no
+expression for {\tt void} available to Cool programmers.}
+The default of type $T$ is 
+written $D_T$.
+
+The implementation mapping gives information about the methods of
+a class. For the above example, {\em implementation} of A  is defined as
+follows:
+
+\[
+\begin{array}{rcl}
+	implementation(A,f) & = & (x, x+a) \\
+	implementation(A,g) & = & (y, y.concat(s))
+\end{array}
+\]
+
+In general, for a class $X$ and a method $m$,
+\[
+	\mbox{\em implementation}(X,m) = (x_1, x_2, \ldots, x_n, e_{body})
+\]
+specifies that method $m$ when invoked from class $X$, has formal
+parameters $x_1, \ldots, x_n$, and the body of the method is expression
+$e_{body}$.
+
+\subsection{Operational Rules}
+
+  Equipped with environments, stores, objects, and class
+definitions, we can now attack the operational semantics for Cool.
+The operational semantics is described by rules similar to the rules
+used in type checking. The general form of the rules is:
+$$
+\osrule{so} S E {e_1} v {S'} \vdots{}
+$$
+The rule should be read as: In the context where {\em self} is the object
+$so$, the store is $S$, and the environment is $E$,
+ the expression $e_1$ evaluates to
+object $v$ and the new store is $S'$.
+The dots above the horizontal bar stand for other statements about the
+evaluation of sub-expressions of $e_1$.
+
+Besides an environment and a store, the evaluation context
+contains a self object $so$. The self object is just the object to which
+the identifier {\tt self} refers if {\tt self} appears in the
+expression. We do not place {\tt self} in the environment and store because
+{\tt self} is not a variable---it cannot be assigned to.
+Note that the rules specify a new store after the evaluation of an
+expression. The new store contains all changes to memory resulting
+as side effects of evaluating expression $e_1$.
+
+The rest of this section presents and briefly discusses each of the operational
+rules.  A few cases are not covered; these are discussed at the end of the section.
+$$
+\osrule{so}{S_1} E {Id\leftarrow e_1}{v_1}{S_3}
+	{\begin{array}{l}
+	 \ossimple{so}{S_1} E {e_1}{v_1}{S_2}\\
+	 E(Id) = l_1\\
+	 S_3 = S_2[v_1/l_1]
+	 \end{array}}{[Assign]}
+$$
+An assignment first evaluates the expression on the right-hand side, yielding
+a value $v_1$.  This value is stored in memory at the address for the
+identifier.
+
+The rules for identifier references, {\tt self}, and constants are straightforward:
+$$
+\osrule{so}{S} E {Id}{v}{S}
+	{\begin{array}{l}
+	 E(Id) = l\\
+	 S(l) = v
+	 \end{array}}{[Var]}
+$$
+
+$$
+\osrule{so}{S} E {\mbox{self}}{so}{S}{}{[Self]}
+$$
+
+$$
+\osrule{so}{S} E {\mbox{true}}{Bool(true)}{S}{}{[True]}
+$$
+
+$$
+\osrule{so}{S} E {\mbox{false}}{Bool(false)}{S}{}{[False]}
+$$
+
+$$
+\osrule{so}{S} E {i}{Int(i)}{S}{i\mbox{ is an integer constant}}{[Int]}
+$$
+
+$$
+\osrule{so}{S} E {s}{String(l,s)}{S}
+	{\begin{array}{l}
+	 s\mbox{ is a string constant}\\
+	l = length(s)
+	 \end{array}}{[String]}
+$$
+
+A {\tt new} expression is more complicated than one might expect:
+$$
+\osrule{so}{S_1} E {\mbox{new }T}{v_1}{S_3}
+	{\begin{array}{l}
+	T_0 = \left\{ \begin{array}{rl}
+			  X & \mif T = \m{\tt SELF\_TYPE} \m{ and }
+					v_1 = X(\ldots) \\
+			  T & \ow
+			\end{array}
+		\right. \\
+	\classmap{T_0}{\attr{a_1}{T_1}{e_1},\dots,\attr{a_n}{T_n}{e_n}}\\
+	l_i = newloc(S_1),\mbox{ for $i=1\ldots n$}\\
+	v_1 = T_0(a_1=l_1,\ldots,a_n=l_n)\\
+	S_2 = S_1[D_{T_1}/l_1,\ldots,D_{T_n}/l_n]\\
+	\ossimple{v_1}{S_2}{[a_1:l_1,\ldots,a_n:l_n]}{\mbox{begin
+	}a_1\leftarrow e_1; \ldots; a_n\leftarrow e_n;\mbox{ end}}{v_2}{S_3}
+	 \end{array}}{[New]}
+$$
+The tricky thing in a {\tt new} expression is to initialize the attributes
+in the right order.  Note also that, during initialization, attributes are
+bound to the default of the appropriate class.
+
+$$
+\osrule{so}{S_1} E {e_0.f(e_1,\ldots,e_n)}{v_{n+1}}{S_{n+4}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{v_1}{S_2}\\
+	\ossimple{so}{S_2}{E}{e_2}{v_2}{S_3}\\
+	\vdots{}\\
+	\ossimple{so}{S_{n}}{E}{e_n}{v_n}{S_{n+1}}\\
+	\ossimple{so}{S_{n+1}}{E}{e_0}{v_0}{S_{n+2}}\\
+	v_0 = X(a_1=l_{a_1},\ldots,a_m=l_{a_m})\\
+	implementation(X,f) = (x_1,\ldots,x_n,e_{n+1})\\
+	l_{x_i} = newloc(S_{n+2}), \mbox{ for $i=1\ldots n$}\\
+	S_{n+3} = S_{n+2}[v_1/l_{x_1},\ldots,v_n/l_{x_n}]\\
+	\ossimple{v_0}{S_{n+3}}{[a_1:l_{a_1},\ldots,a_m:l_{a_m},\,
+	x_1:l_{x_1},\ldots,x_n:l_{x_n}]}{e_{n+1}}{v_{n+1}}{S_{n+4}} 
+	 \end{array}}{[Dispatch]}
+$$
+
+
+$$
+\osrule{so}{S_1} E {e_0@T.f(e_1,\ldots,e_n)}{v_{n+1}}{S_{n+4}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{v_1}{S_2}\\
+	\ossimple{so}{S_2}{E}{e_2}{v_2}{S_3}\\
+	\vdots{}\\
+	\ossimple{so}{S_{n}}{E}{e_n}{v_n}{S_{n+1}}\\
+	\ossimple{so}{S_{n+1}}{E}{e_0}{v_0}{S_{n+2}}\\
+	v_0 = X(a_1=l_{a_1},\ldots,a_m=l_{a_m})\\
+	implementation(T,f) = (x_1,\ldots,x_n,e_{n+1})\\
+	l_{x_i} = newloc(S_{n+2}), \mbox{ for $i=1\ldots n$}\\
+	S_{n+3} = S_{n+2}[v_1/l_{x_1},\ldots,v_n/l_{x_n}]\\
+	\ossimple{v_0}{S_{n+3}}{[a_1:l_{a_1},\ldots,a_m:l_{a_m},\,
+	x_1:l_{x_1},\ldots,x_n:l_{x_n}]}{e_{n+1}}{v_{n+1}}{S_{n+4}} 
+	 \end{array}}{[StaticDispatch]}
+$$
+
+The two dispatch rules do what one would expect.  The arguments are
+evaluated and saved.  Next, the expression on the left-hand side of
+the ``.'' is evaluated.  In a normal dispatch, the class of this expression
+is used to determine the method to invoke; otherwise the class is specified
+in the dispatch itself.
+
+$$
+\osrule{so}{S_1} E {\mbox{if }e_1\mbox{ then }e_2\mbox{ else }e_3\m{ fi}}{v_2}{S_3}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{Bool(true)}{S_2}\\
+	\ossimple{so}{S_2}{E}{e_2}{v_2}{S_3}\\
+	 \end{array}}{[If-True]}
+$$
+
+$$
+\osrule{so}{S_1} E {\mbox{if }e_1\mbox{ then }e_2\mbox{ else }e_3\m{ fi}}{v_3}{S_3}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{Bool(false)}{S_2}\\
+	\ossimple{so}{S_2}{E}{e_3}{v_3}{S_3}\\
+	 \end{array}}{[If-False]}
+$$
+There are no surprises in the if-then-else rules.  Note that value of
+the predicate is a \C{Bool} object, not a boolean.
+
+$$
+\osrule{so}{S_1} E {\mbox{begin	}e_1; e_2;\ldots; e_n;\mbox{ end}}{v_n}{S_{n+1}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{v_1}{S_2}\\
+	\ossimple{so}{S_2}{E}{e_2}{v_2}{S_3}\\
+	\vdots{}\\
+	\ossimple{so}{S_{n}}{E}{e_n}{v_n}{S_{n+1}}\\
+	 \end{array}}{[Sequence]}
+$$
+Blocks are evaluated from the first expression to the last expression, in
+order.  The result is the result of the last expression.
+
+$$
+\osrule{so}{S_1} E {\mbox{let }Id : T_1\leftarrow e_1\mbox{ in } e_2\mbox{ end}}{v_2}{S_{4}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{v_1}{S_2}\\
+	l_1 = newloc(S_2)\\
+	S_3 = S_2[v_1/l_1]\\
+	E' = E[l_1/Id]\\
+	\ossimple{so}{S_3}{E'}{e_2}{v_2}{S_4}\\
+	 \end{array}}{[Let]}
+$$
+A \C{let} evaluates any initialization code, assigns the result to the variable
+at a fresh location, and evaluates the body of the \C{let}.  (If there
+is no initialization, the variable is initialized to the default value
+of $T_1$.) We give the
+operational semantics only for the case of \C{let} with a single variable.
+The semantics of a multiple \C{let}
+\[ \rm let\ x_1 : T_1 \leftarrow e_1,\ x_2: T_2 \leftarrow e2, \ldots,\ x_n :T_n \leftarrow e_n\ in\ e\ end \]
+is defined to be the same as
+\[
+\rm let\ x_1 : T_1 \leftarrow e_1\ in\ (let\ x_2 :T_2 \leftarrow e_2,\ldots,\ x_n : T_n \leftarrow e_n\ in\ e\ end)\ end
+\]
+
+
+
+$$
+\osrule{so}{S_1} E {\mbox{case }e_0\mbox{ of }Id_1:T_1\Rightarrow e_1;\ldots;Id_n:T_n\Rightarrow e_n;\mbox{ esac}}{v_1}{S_{4}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_0}{v_0}{S_2}\\
+	v_0 = X(\ldots)\\
+	T_i = \mbox{closest ancestor of $X$ in $\{T_1,\ldots,T_n\}$}\\
+	l_0 = newloc(S_2)\\
+	S_3 = S_2[v_0/l_0]\\
+	E' = E[l_0/Id_i]\\
+	\ossimple{so}{S_3}{E'}{e_i}{v_1}{S_4}\\
+	 \end{array}}{[Case]}
+$$
+Note that the \C{case} rule requires that the class hierarchy be available in
+some form at runtime, so that the correct branch of the \C{case} can be selected.
+This rule is otherwise straightforward.
+$$
+\osrule{so}{S_1} E {\mbox{while }e_1\mbox{ loop } e_2\mbox{ pool}}{void}{S_{4}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{Bool(true)}{S_2}\\
+	\ossimple{so}{S_2}{E}{e_2}{v_2}{S_3}\\
+	\ossimple{so}{S_3}{E}{\mbox{while }e_1\mbox{ loop } e_2\mbox{ pool}}{v_3}{S_4}\\
+	 \end{array}}{[Loop-True]}
+$$
+
+$$
+\osrule{so}{S_1} E {\mbox{while }e_1\mbox{ loop } e_2\mbox{ pool}}{void}{S_{2}}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}{E}{e_1}{Bool(false)}{S_2}\\
+	 \end{array}}{[Loop-False]}
+$$
+There are two rules for \C{while}: one for the case where the predicate is
+\C{true} and one for the case where the predicate is \C{false}.  Both cases
+are straightforward. The two rules for \C{isvoid} are also straightforward:
+$$
+\osrule{so}{S_1}{E}{\m{isvoid } e_1}{Bool(true)}{S_2}
+	{\ossimple{so}{S_1}{E}{e_1}{void}{S_2}}
+	{[IsVoid-True]}
+$$
+
+$$
+\osrule{so}{S_1}{E}{\m{isvoid } e_1}{Bool(false)}{S_2}
+	{\ossimple{so}{S_1}{E}{e_1}{X(\ldots)}{S_2}}
+	{[IsVoid-False]}
+$$
+The remainder of the rules are for the primitive arithmetic, logical, and 
+comparison operations except equality.  These are all easy rules.
+$$
+\osrule{so}{S_1} E {\mbox{not }e_1}{v_1}{S_2}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}E{e_1}{Bool(b)}{S_2}\\
+	v_1 = Bool(\neg b)
+	 \end{array}}{[Not]}
+$$
+
+$$
+\osrule{so}{S_1} E {e_1\ op\  e_2}{v_1}{S_3}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}E{e_1}{Int(i_1)}{S_2}\\
+	\ossimple{so}{S_2}E{e_2}{Int(i_2)}{S_3}\\
+	op \in \{ \leq, < \} \\
+	v_3 = \left\{\begin{array}{l}
+		Bool(true),\mbox{ if $i_1\ op\  i_2$}\\
+		Bool(false),\mbox{ otherwise}
+		     \end{array}\right.
+	 \end{array}}{[Comp]}
+$$
+
+
+$$
+\osrule{so}{S_1}{E}{\mbox{\~{}}e_1}{v_1}{S_2}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}E{e_1}{Int(i_1)}{S_2}\\
+	v_1 = Int(-i_1)\\
+	 \end{array}}{[Neg]}
+$$
+
+$$
+\osrule{so}{S_1} E {e_1\ op\ e_2}{v_1}{S_3}
+	{\begin{array}{l}
+	\ossimple{so}{S_1}E{e_1}{Int(i_1)}{S_2}\\
+	\ossimple{so}{S_2}E{e_2}{Int(i_2)}{S_3}\\
+	op \in \{ *, +, -, / \}\\
+	v_3 = Int(i_1\ op\ i_2)
+	 \end{array}}{[Arith]}
+$$
+Cool {\tt Int}s are 32-bit two's complement signed integers; the arithmetic
+operations are defined accordingly.
+
+The notation and rules given above are not powerful enough to
+describe how objects are tested for equality, or how runtime
+exceptions are handled.  For these cases we resort to an
+English description.
+
+Two objects are compared for equality by first comparing their
+pointers (addresses). If they are the same, the objects are equal. 
+The value {\tt void} is not equal to any object except itself.  
+If the two objects are of type \C{String}, \C{Bool}, or \C{Int}, their respective
+contents are compared.
+
+In addition, the operational rules do not specify what happens in the
+event of a runtime error.  Execution aborts when a runtime error
+occurs. The following list specifies all possible runtime errors.
+\begin{enumerate}
+\item A dispatch (static or dynamic) on {\tt void}.
+\item A case on {\tt void}.
+\item Execution of a case statement without a matching branch.
+\item Division by zero.
+\item Substring out of range.
+\item Heap overflow.
+
+\end{enumerate}
+
+
+Finally, the rules given above do not
+explain the execution behaviour for dispatches to primitive methods defined in
+the \C{Object}, \C{IO}, or \C{String} classes.
+Descriptions of these primitive methods are given in Sections~\ref{sec-int}-\ref{sec-bool}.
+
+\section{Acknowledgements}
+
+Cool is based on Sather164, which is itself based on the language
+Sather.  Portions of this document were cribbed from the Sather164
+manual; in turn, portions of the Sather164 manual are based on Sather
+documentation written by Stephen M. Omohundro.
+
+A number people have contributed to the design and implementation of
+Cool, including Manuel F\"{a}hndrich, David Gay, Douglas Hauge,
+ Megan Jacoby, Tendo Kayiira, Carleton Miyamoto, and Michael Stoddart.
+
+\end{document}

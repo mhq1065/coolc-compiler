@@ -1,0 +1,1129 @@
+\documentstyle[11pt]{article}
+%
+% Copyright (c) 1995-1996 by Alex Aiken.  All rights reserved.
+% Permission is granted to modify and distribute this document for
+% for non-commercial purposes, so long as this copyright notice is retained
+% in all copies.
+%
+% Side margins:
+% Actual margin is 1 in + this number
+\oddsidemargin -0.25in
+\evensidemargin -0.25in
+
+% Text width:
+\textwidth 6.9in
+
+% Top margin:
+% Actual margin is 1.5 in + this number
+\topmargin -.3in
+
+% Text height:
+\textheight 8.7in
+
+% generally useful macros for writing
+\newcommand{\TexDir}{/home3/aiken/tex}
+
+% Three macros for defining:
+%       Unix elements: filenames and program (sans serif)
+%       Cool elements: literal tokens (typewriter)
+%       C elements: function and variable names (boldface)
+%
+\def\U#1{{\sf{}#1}}
+\def\S#1{{\tt{}#1}} % NB: we often use \verb+...+ for this also
+\def\C#1{{\bf{}#1}}
+
+% These allow switching interline spacing; the change takes effect immediately:
+
+\makeatletter
+\newcommand{\singlespacing}{\let\CS=\@currsize\renewcommand{\baselinestretch}{1}\tiny\CS}
+\newcommand{\oneandahalfspacing}{\let\CS=\@currsize\renewcommand{\baselinestretch}{1.25}\tiny\CS}
+\newcommand{\doublespacing}{\let\CS=\@currsize\renewcommand{\baselinestretch}{1.5}\tiny\CS}
+%setspacingto sets the interline spacing to the value of its argument
+% e.g., \setspacingto{1.5} is the same as \doublespacing
+\newcommand{\setspacingto}[1]{\let\CS=\@currsize\renewcommand{\baselinestretch}{#1}\tiny\CS}
+\makeatother
+
+% nonumber
+\newcommand{\nn}{\nonumber}
+
+% Tab for hand-formatting:
+\newcommand{\tab}{\hspace*{2em}}
+
+% Angle brackets:
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
+% s.t.
+\newcommand{\st}{\mbox{\ s.t.\ }}
+
+% otherwise
+\newcommand{\ow}{\m{\rm otherwise}}
+
+% if
+\newcommand{\mif}{\m{\rm if\ }}
+
+% Harpoons
+\newcommand{\rh}{\rightharpoonup}
+\newcommand{\lh}{\leftharpoonup}
+
+% Denotational-semantics-style brackets and bottom:
+\newcommand{\lbk}{\lbrack\!\lbrack}
+\newcommand{\rbk}{\rbrack\!\rbrack}
+\newcommand{\bottom}{\perp}
+
+% Projection operator
+\newcommand{\proj}{\!\downarrow\!}
+
+% macros for mbox combined with another style
+% (useful for changing typefaces in math mode)
+\newcommand {\mboxbf}[1]{\mbox{{\bf #1}}}
+\newcommand {\mboxit}[1]{\mbox{{\it #1}}}
+\newcommand {\mboxem}[1]{\mbox{{\em #1}}}
+\newcommand {\m}{\mbox}
+\newcommand {\ch}{\rm}
+	
+% macro for creating a binary operator
+%
+% example:  \makebinop{\makebinop{\mybmod}{mod}
+%	(duplicates the \bmod macro)
+%
+\def\makebinop#1#2{\def#1{\mskip-\medmuskip \mskip5mu
+\mathbin{\rm #2} \penalty900 \mskip5mu \mskip-\medmuskip}}
+
+% Environments for theorems, lemmas, etc.
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{fact}{Fact}[theorem]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{constraint}[theorem]{Constraint}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{law}[theorem]{Law}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{invariant}[theorem]{Invariant}
+
+% Definition of the proof-environment:
+\newenvironment{proof}{{\bf Proof:}\quad}{$\Box$}
+
+
+%
+% An environment for formatting programs. 
+%
+%	written by Hal Perkins
+%	adapted by Charles Elkan	9/3/86
+%	keyword macros by Anne Neirynck
+%
+% Usage :
+%
+% \begin{program}
+% program text\\
+% program text
+% \end{program}
+%
+% The program environment is a tabbing environment with ten tab stops spaced
+% evenly from the left of the page.  Initially the left margin is the second
+% tab stop.  Use \+ to indent following lines one more tab stop, \- to undo
+% the effect of \+, and \> at the beginning of a line to indent an extra tab.
+
+\newlength{\pgmtab}          %  \pgmtab is the width of each tab in the
+\setlength{\pgmtab}{2em}     %  program environment
+
+% boxed program is like program, only boxed!
+% This is useful for centering programs and preventing page breaks in programs.
+% argument t or b is required.
+
+\newenvironment{boxed-program}[1]{\begin{minipage}[#1]{9in}
+\begin{tabbing}\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=%
+\kill}{\end{tabbing}\end{minipage}}
+
+\newenvironment{program}{\begin{tabbing}\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=\hspace{\pgmtab}\=%
+\hspace{\pgmtab}\=%
+\+\+\kill}{\end{tabbing}}
+
+% The following commands should be used OUTSIDE math mode
+
+\newcommand {\FUNCTION}{{\bf function\ }}
+\newcommand {\BEGIN}{{\bf begin\ }}
+\newcommand {\END}{{\bf end}}
+\newcommand {\CASE}{{\bf case}}
+\newcommand {\OF}{{\bf of}}
+\newcommand {\SELECT}{{\bf select\ }}
+\newcommand {\WHERE}{{\bf where\ }}
+\newcommand {\DECLARE}{{\bf declare\ }}
+\newcommand {\ARRAY}{{\bf array\ }}
+\newcommand {\LET}{{\bf\ let\ }}
+\newcommand {\IN}{{\bf\ in\ }}
+\newcommand {\IF}{{\bf if\ }}
+\newcommand {\THEN}{{\bf then\ }}
+\newcommand {\ELSE}{{\bf else\ }}
+\newcommand {\SKIP}{{\bf skip\ }}
+\newcommand {\DO}{{\bf do\ }}
+% OLD---don't use \OD
+\newcommand {\OD}{{\bf od\ }}
+\newcommand {\BY}{{\bf by\ }}
+\newcommand {\LOOP}{{\bf loop\ }}
+\newcommand {\WHILE}{{\bf while\ }}
+\newcommand {\TO}{{\bf to\ }}
+\newcommand {\DOWNTO}{{\bf down to\ }}
+\newcommand {\FOR}{{\bf for\ }}
+\newcommand {\FOREACH}{{\bf for each\ }}
+\newcommand {\RETURN}{{\bf return\ }}
+\newcommand {\REPEAT}{{\bf repeat\ }}
+\newcommand {\UNTIL}{{\bf until\ }}
+\newcommand {\LCOM}{$(\ast \;$}
+\newcommand {\RCOM}{$\ast)$}
+\newcommand {\GOTO}{{\bf goto\ }}
+
+% The following commands are for use INSIDE math mode
+
+\newcommand {\OP}[1]{\mbox{\sc #1}}
+\newcommand {\op}[1]{\mbox{\sc #1}}
+\newcommand {\mm}[1]{\mbox{\rm #1}\;}
+\newcommand {\id}[1]{\mbox{\it #1\ }}
+
+\newcommand {\ASSIGN}{\leftarrow }
+\newcommand {\MIN}{\OP{min} }
+\newcommand {\MOD}{\; {\bf{\rm mod}} \; } 
+\newcommand {\LAMBDA}{{\bf \lambda\ }}
+\newcommand {\FALSE}{{\em FALSE\ }}
+
+% Miscellaneous notation
+
+\newcommand {\And}{\wedge}
+\newcommand {\Or}{\vee}
+
+\newcommand {\thus}{{\dot{. \: .}\;}}
+
+\newcommand {\bigO}[1]{{\cal O}(#1)}
+
+\newcommand {\app}{\!\!:\!}
+\newcommand {\hastype}{::}
+\newcommand{\hast}{:}
+\newcommand{\qt}[1]{\mbox{``#1''}}
+\newcommand{\TexComment}[1]{}
+
+\newcommand{\dq}{\m{\tt "}}
+\newcommand{\flatqt}[1]{\m{\dq #1 \dq}}
+\newcommand{\seq}{\subseteq}
+\newcommand{\derives}{\vdash}
+
+% for writing grammars
+\newcommand{\grammar}{::=}
+\newcommand{\gor}{\,|\,}
+
+% macros for writing inference rules
+\newcommand{\infrule}[2]{\displaystyle{\displaystyle\strut{#1}} \over %
+                                        {\displaystyle\strut {#2}}}
+\newcommand{\cinfrule}[3]{\parbox{14cm}{\hfil$\infrule{#1}{#2}$\hfil}\parbox{4cm}{$\,#3$\hfil}}
+
+\begin{document}
+
+\title{A Tour of the Cool Support Code\thanks{
+Copyright \copyright 1995-1996 by Alex Aiken.
+All rights reserved.}}  
+\date{ }
+\author{ }
+\maketitle
+
+\section{Introduction}
+
+The Cool compiler project provides a number of basic data types to
+make the task of writing a Cool compiler tractable in the timespan of
+the course.  This document provides an overview of the Cool compiler
+support code, which includes:
+
+\begin{itemize}
+
+\item a linked list data type;
+
+\item a string table package;
+
+\item a symbol table package;
+
+\item miscellaneous utilities for the parser and lexer; 
+
+\item a package for managing Cool abstract syntax trees;
+
+\item routines for printing abstract syntax trees;
+
+\item miscellaneous routines for handling multiple input files and
+	command-line flags;
+
+\item the runtime system.
+
+
+\end{itemize}
+
+This document should be read in conjunction with the source code.  With
+the exception of the abstract syntax tree package (which is automatically
+generated), there are also extensive comments in the source. 
+
+The purpose of the Cool support code is 
+to be easy to understand and use.  There are much more efficient
+implementations of most of the data structures used in the system.  It
+is recommended that students implementing a Cool compiler also stick
+to simple, obviously correct, and perhaps inefficient
+implementations---writing a compiler that works 
+correctly is usually difficult enough.
+
+The Cool system is written in C++ and it is assumed that the reader
+has some familiarity with that language.  The base system deliberately
+uses a simple subset of the language.  The heavily used features are:
+classes, single inheritance, virtual functions, and templates.
+Overloading is used very sparingly; with one exception, operator
+overloading is avoided completely (the exception is the operator {\tt
+<<}).  Destructors are not used and in fact memory management is
+ignored completely.  Memory management is a very important part of
+software development as it is currently practiced in industry, but
+memory management is also tricky, error-prone, and very time consuming
+to get completely right.  It is suggested that students also not
+worry about memory management in writing their own Cool compilers.
+
+\section{Lists}
+
+The file {\tt list.h} implements a simple linked list datatype.  The operations
+are similar to those provided in Lisp-family languages: a constructor {\tt List}
+adds a new element to the front of a list, {\tt hd} returns the first element
+of a list, and {\tt tl} returns the tail of a list.  Functions are also
+provided for computing the length of a list, applying a function to every
+element of a list, and printing a list.
+Example uses of lists can be found 
+in the implementation of both string tables and symbol tables.
+
+\section{String Tables}
+
+All compilers manage large numbers of strings such as
+program identifiers, numerical constants, and string constants.
+Often, many of these strings are the same. For example,
+each identifier typically occurs many times in a program.
+To ensure that string constants are stored compactly and 
+manipulated efficiently, a specialized data structure, the
+{\em string table}, is employed.
+
+A string table is a lookup table that maintains a single copy of each
+string.  The Cool string table class provides methods for inserting
+and querying string tables in a variety of ways (see the file {\tt
+stringtab.h}).  While production compilers use hashed data structures
+to implement string tables, the Cool string tables are implemented
+as lists (see {\tt stringtab\_functions.h}).  The components
+of Cool string tables are of type {\tt Entry}.  Each {\tt Entry}
+stores a string, the length of the string, and an integer index unique
+to the string.
+
+An important point about the structure of the Cool compiler is that
+there are actually three distinct string tables: one for string
+constants ({\tt stringtable}), one for integer constants ({\tt
+inttable}), and one for identifiers ({\tt idtable}).  The code
+generator must distinguish integer constants and string constants
+from each other and from identifiers, because special code is produced
+for each string constant and each integer constant in the program.
+Having three distinct string tables makes this distinction easy.  Note
+that each of the three tables has a different element type ({\tt
+StrEntry}, {\tt IntEntry}, and {\tt IdEntry}), each of which is a
+derived class of {\tt Entry}.  Throughout the rest of the compiler
+(except parts of the code generator), a pointer to an {\tt Entry} is
+called a {\tt Symbol}, irrespective of whether the symbol represents
+an integer, string, or identifier.
+
+Because string tables store only one copy of each string, comparing
+whether two {\tt IntEntry}s, {\tt StrEntry}s, or {\tt IdEntry}s $\tt x$
+and $\tt y$ represent the same string can be done simply by comparing
+the two pointers {\tt x == y}.  Note that it does not make sense to
+compare entries from different string tables (e.g., {\tt IntEntry}s
+with {\tt StrEntry}s) as these are guaranteed to be different even if
+the strings are the same.
+
+
+Three
+methods are provided to add elements to a table: \C{add\_string(char *s,int m)},
+which adds a string \C{s} of at most \C{m} characters; \C{add\_string(char *s)},
+which adds a string \C{s} to the table; and \C{add\_int(int i)}, which converts
+integer \C{i} to a string and adds the string to the table.
+Each of these methods returns a type derived from \C{Entry}
+to describe the symbol table entry,  on which the method \C{get\_string}
+is defined for extracting the entry's string.  Before using these functions you
+should read the documentation in \U{stringtab.cc}.  If you don't use
+the interface with the string table manager correctly, your program may
+crash.
+
+\section{Symbol Tables}
+
+In addition to strings, compilers must also determine and manage the
+scope of program names.  A symbol table is a data structure for
+managing scope.  Conceptually, a symbol table is just another lookup
+table.  The key is the symbol (the name) and the result is whatever
+information has been associated with that symbol (e.g., the symbol's
+type).
+
+In addition to adding and removing symbols, symbol tables also support
+operations for entering and exiting scopes and for checking whether an
+identifier is already defined in the current scope.  The lookup
+operation must also observe the scoping rules of the language; if
+there are multiple definitions of identifier {\tt x}, the scoping
+rules determine which definition a lookup of {\tt x} returns.  In most
+languages, including Cool, inner definitions hide outer definitions.
+Thus, a lookup on {\tt x} returns the definition of {\tt x} from the
+innermost scope with a definition of {\tt x}.
+
+Cool symbol tables are implemented as lists of scopes, where each
+scope is a list of $\rm \la identifier,data \ra$ pairs.  The ``data''
+is whatever data the programmer wishes to associate with each
+identifier.  The symbol table operations are very straightforward to
+define on this structure and are documented in {\tt symtab.h}.  An
+example illustrating the use of symbol tables is in the file {\tt
+symtab\_example.cc}.
+
+\section{Utilities}
+
+The files {\tt utilities.h} and {\tt utilities.cc} define a few
+functions useful in writing and debugging a Cool parser and lexical
+analyzer.  See the source code for documentation.
+
+\section{Abstract Syntax Trees}
+
+After lexical analysis and parsing, a Cool program is represented
+internally by the Cool compiler as an abstract syntax tree.  The
+project comes with a definition of Cool abstract syntax trees (ASTs)
+built in.  The AST package is by far the largest piece of code in the
+base system and requires the most time to learn.  The learning process
+is made more complex because the AST code is generated automatically
+from a specification in the file {\tt cool-tree.aps}.  While the
+generated code is quite simple and regular in structure, it is also
+devoid of comments.  This section serves as the documentation for the
+AST package.
+
+
+\subsection{Phyla and Constructors}
+
+The AST data type provides, for each kind of Cool construct, a class
+for representing expressions of that kind.  There is a class for {\tt
+let} expressions, another class of {\tt +} expressions, and so on.
+Objects of these classes are nodes in Cool abstract syntax trees.
+For example, an expression $\tt e_1 + e_2$ is represented by a {\tt +}
+expression object, which has two subtrees: one for the tree representing 
+the expression $\tt e_1$ and one for the tree representing the
+expression $\tt e_2$.
+
+The Cool abstract syntax is specified in a language called APS.
+In APS terminology, the various kinds of abstract syntax tree nodes
+({\tt let}, {\tt +}, etc.) are called {\em constructors}.  (Don't
+confuse this use of the term ``constructor'' with C++ constructors;
+while similar, this is a slightly different meaning taken from
+functional languages that predates C++.)  The form of the AST
+is described by a set of {\it phyla}.  Each phylum has one or more
+constructors.
+
+Phyla are really just types.  That is, instead of having one large
+group of undifferentiated constructors, the constructors are grouped
+together according to function, so that, for example, the constructors
+for expression ASTs are distinguished from the
+constructors for class ASTs.  The phyla are defined at the
+beginning of {\tt cool-tree.aps}:
+\begin{verbatim}
+module COOL begin
+  phylum Program;
+
+  phylum Class_;
+  phylum Classes = LIST[Class_];
+
+  phylum Feature;
+  phylum Features = LIST[Feature];
+
+  phylum Formal;
+  phylum Formals = LIST[Formal];
+
+  phylum Expression;
+  phylum Expressions = LIST[Expression];
+
+  phylum Case;
+  phylum Cases = LIST[Case];
+
+\end{verbatim}
+
+From the definition it can be seen that there are two distinct kinds of
+phyla: ``normal'' phyla and list phyla.  ``Normal'' phyla each have 
+associated constructors; list phyla have a fixed set of list operations.
+
+Each constructor takes typed arguments and returns a typed result.  The types
+may either be phyla or any ordinary C++ type.  In fact, the phyla declarations
+are themselves compiled into C++ class declarations by an APS compiler.
+A sample constructor definition is
+\begin{verbatim}
+  constructor class_(name : Symbol; parent: Symbol; features : Features;
+                     filename : Symbol) : Class_;
+\end{verbatim}
+This declaration specifies that the {\tt class\_\ } constructor\footnote{The name
+ {\tt class\_} is chosen to avoid a conflict with the C++ keyword {\tt class}.} takes four
+arguments: a {\tt Symbol} (a type identifier) for the class name, a
+{\tt Symbol} (another type identifier) for the parent class, a
+{\tt Features}, and a {\tt Symbol} for the filename in which the class definition
+occurs.  The phylum {\tt Features} is defined to be a list of {\tt Feature}'s
+by the declaration
+\begin{verbatim}
+   phylum Features = LIST[Feature];
+\end{verbatim}
+See Section~\ref{sec-lists} for a description of the operations defined on
+AST lists.
+
+The {\tt class\_} constructor returns an AST of type
+(or phylum) {\tt Class\_}.  In {\tt cool.y} there is the following example of a
+use of the {\tt class\_} constructor:
+\begin{verbatim}
+class   :  CLASS TYPEID INHERITS TYPEID IS optional_feature_list END ';'
+           { $$ = class_($2,$4,$6,stringtable.add_string(curr_filename)); }
+\end{verbatim}
+The {\tt class\_} constructor builds a {\tt Class\_}  tree node with the
+four arguments as children.  Because the phyla (types) of the arguments
+are declared, the C++ type checker enforces that the {\tt class\_} constructor is 
+applied only to arguments of the appropriate type.
+See Section~\ref{sec-con} and {\tt cool-tree.aps}  to learn the definitions of the other constructors.\footnote{Comments in {\tt cool-tree.aps} begin with two hyphens ``-- --''.}
+
+There is a real danger of getting confused because the same names are
+used repeatedly for different entities in different contexts.  In the
+example just above, small variations of the name {\tt class} are used
+for a terminal ({\tt CLASS}), a non-terminal ({\tt class}), a constructor
+({\tt class\_}), and a phylum ({\tt Class\_}).  These
+uses are all distinct and mean different things.  There is
+also a {\tt class\_} member of the {\tt union} declaration in
+{\tt cool.y}, which means yet something else.  Most uses are
+distinguished consistently by capitalization, but a few are not.
+When reading the code it is important to keep in mind the role of each
+symbol.
+
+
+\subsection{AST Lists}
+\label{sec-lists}
+
+List phyla have a distinct set of operations for constructing and
+accessing lists.  Note that the AST package uses its own definition of
+lists, which is distinct from and has different operations than
+the list type defined in {\tt list.h}.
+
+For each phylum named {\em X}
+there is a phylum called {\em X}s (except for {\tt Classes}, which is
+a list of {\tt Class\_} nodes) of type {\tt List[X]}.  List functions are defined
+automatically for each list.  For the {\tt Class\_} phylum some of the
+list functions and methods are:
+\begin{verbatim}
+Classes  nil_Classes();
+Classes  single_Classes(Class_);
+Classes  append_Classes(Classes,Classes);
+Class_   nth(int index);
+int      len();
+\end{verbatim}
+These functions will be familiar to anyone with a passing knowledge of
+Lisp or Scheme.  The function {\tt nil\_{\em phylum}s()} returns an
+empty list of type {\em phylum}.  The function {\tt single\_{\em
+phylum}s} makes a list of length 1 out of its {\em phylum}
+argument. The function {\tt append\_{\em phylum}s} appends two lists of
+{\em phylum}s.  The method {\tt nth} selects the {\tt index}'th element of
+its list argument.  The method {\tt len} returns the length of the list.
+
+AST lists also have a simple list iterator.  There is a method {\tt first}
+that returns the index of the first element of the list, a predicate {\tt more}
+that is false if its index argument is the last element of the list, and
+a method {\tt next} that returns the next index of the list.  This iterator
+is quite naive and inefficient; to find the $n$th element of the list,
+up to $n$ elements of the list must be examined.  However, it is simple
+to understand and use.
+The list functions are defined in {\tt cool-X-tree.h} and {\tt tree.h}.
+A typical use of the iterator functions to walk through a list $\tt l$ is:
+\begin{verbatim}
+for(int i = l->first(); l->more(i); i = l->next(i))
+     { . . . do something with l->nth(i) . . . }
+\end{verbatim}
+
+\subsection{The AST Class Hierarchy}
+
+With the exception of lists, all AST classes are derived from the
+class {\tt tree\_node}.  All of the lists are lists of {\tt tree\_node}s.
+The {\tt tree\_node} class and the AST list template are defined in 
+{\tt tree.h}.
+
+The {\tt tree\_node} class definition contains everything needed in an
+abstract syntax tree node except information specific to particular
+constructors.  There is a protected data member {\tt
+line\_number}, the line number where the expression corresponding to
+the AST node appeared in the source file.
+ The line number is used by a Cool compiler to give good
+error messages.  
+
+Several functions are defined on all {\tt tree\_node}s.  The important functions
+are: {\tt dump}, which pretty prints an AST and {\tt get\_line\_number},
+which is a selector for the corresponding data member.
+
+Each of the phyla is a class derived directly from {\tt tree\_node}.  As stated
+previously, the phyla exist primarily to group related constructors together
+and as such do not add much new functionality.
+
+Each of the constructors is a class derived from the appropriate
+phyla.  Each of the constructor classes defines a function of the same
+name that can be used to build AST nodes.  The {\tt dump} function is
+also defined automatically for each constructor.
+
+\subsection{Class Members}
+\label{sec-sel}
+
+Each class definition of the tree package comes with a number of
+members.  Some of the member functions are discussed above.
+This section describes the data members and some more (but not all) of
+the rest of the functions, as well as how to add new members
+to the classes.  
+
+Each constructor has data members defined for
+each component of that constructor. The name of the member is the name of
+the field in the constructor, and it is only visible to member functions
+of the constructor's class or derived classes.
+ For example, the {\tt class\_} constructor
+has four data members:
+\begin{verbatim}
+Symbol name;
+Symbol parent;
+Features features;
+Symbol filename;
+\end{verbatim}
+Here is a complete use of one member:
+\begin{verbatim}
+ Class_ c;
+ Symbol p;
+
+ Symbol Class_::get_parent() { return parent; }
+
+ c = class(idtable.add_string("Foo",3),idtable.add_string("Bar"),nil_Features(),
+           stringtable.add_string("filename"));
+ p = c->get_parent();  // Sets p to the symbol for "Bar"
+\end{verbatim}
+
+It will be useful in writing a Cool compiler to extend the AST with
+new functions such as {\tt get\_parent}. Simply modify the {\tt
+cool-tree.h} file to add functions to the class of the appropriate
+phylum or constructor.
+
+
+
+\subsection{The Constructors}
+\label{sec-con}
+
+This section briefly describes each
+constructor and its role in the compiler.
+Each constructor corresponds to a portion of the Cool grammar.  The
+order of arguments to a constructor follows the order in which symbols
+appear in productions in the Cool syntax specification in the manual.
+This correspondence between constructors and program syntax should
+make clear how to use the arguments of constructors.  It
+may be helpful to read this section in conjunction with {\tt cool-tree.aps}.
+
+\begin{itemize}
+\item {\tt program} \\
+This constructor is applied at the end of parsing to the final list of classes.
+The only needed use of this constructor is already  in the skeleton {\tt cool.y}.
+
+\item {\tt class\_} \\
+This constructor builds a class node from two types and a list of features.
+See the examples above.
+
+\item {\tt method} \\
+This is one of the two constructors in the {\tt Feature} phylum.  Use
+this constructor to build AST nodes for methods.  Note that the second
+argument is a list of {\tt Formal}s.
+
+\item {\tt attr} \\
+This is the constructor for attributes.  The {\tt init} field is for the expression
+that is the optional initialization.
+
+\item {\tt formal} \\
+This is the constructor for formal parameters in method definitions.  The field names are
+self-explanatory.
+
+\item {\tt branch} \\
+This is the single constructor in the {\tt Case} phylum.  A branch of a {\tt case}
+expression has the form
+\begin{verbatim}
+name : typeid => expr;
+\end{verbatim}
+which corresponds to the field names in the obvious way.  Use this constructor
+to build an AST for each branch of a {\tt case} expression.
+
+\item {\tt assign} \\
+This is the constructor for assignment expressions.
+
+\item {\tt static\_dispatch} and {\tt dispatch} \\
+There are two different kinds of dispatch in Cool and they have distinct constructors.
+See the CoolAid for a discussion of static vs. normal dispatch.  Note
+there is a shorthand for dispatch that omits the {\tt self} parameter. Don't
+use the {\tt no\_expr} constructor in place of {\tt self}; you need to fill in
+the symbol for {\tt self} for the rest of the compiler to work correctly.
+
+\item {\tt cond} \\
+This is the constructor for {\tt if-then-else} expressions.
+
+\item {\tt loop}\\
+This is the constructor for {\tt loop-pool} expressions.
+
+\item {\tt typcase}\\
+This constructor builds an AST for a {\tt case} expression.  Note that the
+second argument is a list of case branches (see the {\tt branch} constructor
+above).
+
+\item{\tt block} \\
+This is the constructor for {\tt begin-end} expressions.
+
+\item {\tt let}\\
+This is the constructor for {\tt let} expressions. Note that the
+{\tt let} constructor only allows one identifier.  When parsing a {\tt let}
+expression with multiple identifiers, it should be transformed  into
+nested {\tt let}s with single identifiers, as described in the semantics
+for {\tt let} in the CoolAid.
+
+\item {\tt plus}\\
+This is the constructor for $\tt +$ expressions.
+
+\item {\tt sub}\\
+This is the constructor for $\tt -$ expressions.
+
+\item {\tt mul}\\
+This is the constructor for $\tt \ast$ expressions.
+
+
+\item {\tt divide}\\
+This is the constructor for $\tt /$ expressions.
+
+\item {\tt neg}\\
+This is the constructor for $\tt \;\tilde{ }\;$ expressions.
+
+\item {\tt lt}\\
+This is the constructor for $\tt <$ expressions.
+
+\item {\tt eq}\\
+This is the constructor for $\tt =$ expressions.
+
+\item {\tt leq}\\
+This is the constructor for $\tt <=$ expressions.
+
+\item {\tt comp}\\
+This is the constructor for $\tt not$ expressions.
+
+\item {\tt int\_const}\\
+This is the constructor for integer constants.
+
+
+\item {\tt bool\_const}\\
+This is the constructor for boolean constants.
+
+\item {\tt string\_const}\\
+This is the constructor for string constants.
+
+\item {\tt new\_}\\
+This is the constructor for {\tt new} expressions.
+
+\item {\tt isvoid}\\
+This is the constructor for {\tt isvoid} expressions.
+
+\item {\tt no\_expr}\\
+This constructor takes no arguments.  Use {\tt no\_expr}
+where constructor arguments are missing because an optional expression
+is omitted, except for a missing {\tt self} in a dispatch expression
+(see the discussion of dispatch above).
+
+\item {\tt object} \\
+This constructor is for expressions that are just object identifiers.
+Note that object identifiers are used in many places in the syntax,
+but there is only one production for object identifiers as expressions.
+
+\end{itemize}
+
+\subsection{Tips on Using the Tree Package}
+
+There are a few common errors people make using a tree package.
+\begin{itemize}
+
+\item The tree package implements an abstract data type.  Violating
+ the interface (e.g., by casting, pointer arithmetic, etc.)
+invites disaster.  Stick to the interface as it is defined.
+When adding new members to the class declarations, be careful that
+those members do not perturb the interface for the existing functions.
+
+\item The value {\tt NULL} is not a valid component of any AST.
+Never use {\tt NULL} as an argument to a constructor.
+Use {\tt nil\_{\em phylum}\(\)} to create empty lists.
+
+\item All tree nodes and lists are distinct.  A test such as
+\begin{verbatim}
+if (x == nil_Expression()) { ... }
+\end{verbatim}
+is always false, because {\tt nil\_Expression()} creates a new empty list
+each time it is used.  To check whether a list is empty, use the
+{\tt len} method (see {\tt tree.h}).
+
+\item It is also pointless to compare with childless tree nodes.
+For example,
+\begin{verbatim}
+if (x == no_expr()) { ... }
+\end{verbatim}
+is always false, because {\tt no\_expr} creates a new AST each time
+it is called.  Define a virtual method to determine
+the constructor of {\tt x} (see Section~\ref{sec-sel}).
+
+\item The tree package functions perform checks to ensure that trees
+are used correctly.  If something bad is detected, the function
+{\tt fatal\_error} is invoked to terminate execution.  To determine
+where the problem lies it is best to use the debugger {\tt dbx} or {\tt gdb}.  Set a breakpoint on {\tt fatal\_error} and use the
+{\tt where} command to find out what routine caused the error.
+\end{itemize}
+
+\section{The Runtime System}
+\label{sec-runtime}
+
+The runtime system consists of a set of hand-coded assembly language
+functions that are used as subroutines by Cool programs.  Under {\tt
+spim} the runtime system is in the file {\tt trap.handler}.  The use
+of the runtime system is a concern only for code generation, which
+must adhere to the interface provided by the runtime system.
+
+The runtime system contains four classes of routines: 
+\begin{enumerate}
+\item startup code, which invokes the main method of the
+main program;
+
+\item the code for methods of predefined classes
+(\C{Object}, \C{IO}, \C{String});
+
+\item a few special procedures needed by Cool programs to test objects
+	for equality and handle runtime errors;
+
+\item the garbage collector.
+\end{enumerate}
+
+The Cool runtime system is in the file \U{\~{}cs164/lib/trap.handler};
+it is loaded automatically whenever \U{spim}/\U{xspim} is invoked. 
+Comments in the file explain how the predefined functions are called.
+
+The following sections describe what the Cool runtime system assumes about
+the generated code, and what the runtime system provides to the generated
+code. Read Section 13 of the \U{CoolAid} manual for a formal description
+of the execution semantics of Cool programs.
+
+\subsection{Object Header}
+The first three 32-bit words of each object are assumed to contain a
+class tag, the object size, and a pointer for dispatch information.
+In addition, the garbage collector requires that 
+the word immediately before an object contain -1; this word is not part of the
+object.
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+offset -4 & Garbage Collector Tag\\
+\hline
+offset 0 & Class tag\\
+\hline
+offset 4 & Object size (in 32-bit words)\\
+\hline
+offset 8 & Dispatch pointer\\
+\hline
+offset 12$\ldots$ & Attributes \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Object layout.}
+\label{fig0}
+\end{figure}
+
+Figure~\ref{fig0} shows the layout of a Cool object; the offsets are
+given in numbers of bytes.  The garbage collection tag is -1.  The
+class tag is a 32-bit integer identifying the class of the object. The
+runtime system uses the class tag in equality comparisons between
+objects of the basic classes and in the abort functions to index a
+table containing the name of each class.
+
+The object size field and garbage collector tag are maintained by the
+runtime system; only the runtime system should create new objects.
+However, {\em prototype objects} (see below) must be coded directly by
+the code generator in the static data area, so the code generator
+should initialize the object size field and garbage collector tag of
+prototypes properly.  Any statically generated objects must also
+initialize these fields.
+
+The dispatch pointer is never actually used by the runtime system.
+Thus, the structure of dispatch information is not fixed.  You should
+design the structure and use of the dispatch information for your code
+generator. In particular, the dispatch information should be used to
+invoke the correct method implementation on dynamic dispatches.
+
+For \C{Int} objects, the only attribute is the 32-bit value of the
+integer. For \U{Bool} objects, the only attribute is the 32-bit value
+1 or 0, representing either true or false.  The first attribute of
+\U{String} objects is an object pointer to an \U{Int} object
+representing the size of the string. The actual sequence of ASCII
+characters of the string starts at the second attribute (offset 16),
+terminates with a 0, and is then padded with 0's to a word boundary.
+
+The value {\em void} is a null pointer and is represented by the
+32-bit value 0.  All uninitialized variables (except variables of type
+\U{Int}, \U{Bool}, and \U{String}; see the {\em CoolAid}) are set to
+{\em void} by default.
+
+\subsection{Prototype Objects}
+
+The only way to allocate a new object in the heap is to use the {\tt
+Object.copy} method.  Thus, there must be an object of every class
+that can be copied.  For each class $X$ in the Cool program, the code
+generator should produce a skeleton $X$ object in the data area; this
+object is the prototype of class $X$.
+
+For each prototype object the garbage collection tag, class tag,
+object size, and dispatch information must be set correctly.  For the
+basic classes {\tt Int}, {\tt Bool}, and {\tt String}, the attributes
+should be set to the defaults specified in the {\em CoolAid}.  For the other
+classes the attributes of the prototypes may be whatever you find
+convenient for your implementation.
+
+\subsection{Stack and Register Conventions}
+
+The primitive methods in the runtime system expect arguments in register
+\C{\$a0} and on the stack. Usually \C{\$a0} contains the \C{self} object
+of the dispatch. Additional arguments should be on top of the stack, first
+argument pushed first (an issue only for \C{String.substr}, which takes
+two arguments). Some of the primitive runtime procedures expect
+arguments in particular registers.
+
+Figure~\ref{fig1} shows which registers are used by the runtime system. The
+runtime system may modify any of the scratch registers without restoring them
+(unless otherwise specified for a particular routine). The heap
+pointer is used to keep track of the next free word on the heap, and
+the limit pointer is used to keep track of where the heap ends. These
+two registers should not be modified or used by the generated
+code---they are maintained entirely in the runtime system. All other registers,
+apart from \C{\$at},\C{\$sp},\C{\$ra}, remain unmodified.
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Scratch registers & \C{\$v0},\C{\$v1},\C{\$a0}--\C{\$a2},\C{\$t0}--\C{\$t2}\\
+\hline
+Heap pointer   & \C{\$gp} \\
+\hline
+Limit pointer & \C{\$s7}\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Usage of registers by the runtime system.}
+\label{fig1}
+\end{figure}
+\subsection{Labels Expected}
+
+The Cool runtime system refers to the fixed labels listed in
+Figure~\ref{fig10}.  Each entry describes what the runtime system
+expects to find at a particular label and where (code/data segment)
+the label should appear.
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\C{Main\_protObj}	& The prototype object of class \C{Main}	& Data\\
+\C{Main\_init}	& Code that initializes an object of class \C{Main} &
+Code\\
+		& passed in \C{\$a0} &\\
+\C{Main.main}	& The main method for class \C{Main}	& Code\\
+		& \C{\$a0} contains the initial \C{Main} object & \\
+\C{Int\_protObj}	& the prototype object of class \C{Int}	& Data\\
+\C{Int\_init}	& code that initializes an object of class \C{Int} &
+Code\\
+		& passed in \C{\$a0} 	&\\
+\C{String\_protObj}	& the prototype object of class \C{String}	& Data\\
+\C{String\_init}	& code initializing an object of class \C{String} &
+Code\\
+		& passed in \C{\$a0} 	&\\
+\C{\_int\_tag}	& a single word containing the class tag for the \C{Int}
+class & Data\\
+\C{\_bool\_tag}	& a single word containing the class tag for the \C{Bool}
+class & Data\\
+\C{\_string\_tag}	& a single word containing the class tag for the \C{String}
+class & Data\\
+\C{class\_nameTab}	& a table, which at index (class tag) $\ast$ 4 contains a pointer  & Data \\
+		&  to a \C{String} object containing the name of the class
+associated &\\
+		&  with the class tag &\\
+\C{bool\_const0}	& the \C{Bool} object representing the boolean value false & Data\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Fixed labels.}
+\label{fig10}
+\end{figure}
+
+There is no need for code that initializes an object of class \C{Bool}
+if the generated code contains definitions of both \C{Bool} objects
+in the static data area.
+The easiest way to ensure these labels are correct in the generated code 
+is to adopt the following naming conventions:
+\begin{center}
+\begin{tabular}{ll}
+\verb#<class>_init#	&	for init code of class
+\verb#<class>#\\
+\verb#<class>.<method>#	&	for method \verb#<method># code of class
+\verb#<class>#\\
+\verb#<class>_protObj#	&	for the prototype object of class
+\verb#<class>#\\
+\end{tabular}
+\end{center}
+Finally, Figure~\ref{fig2} lists labels defined in the runtime system that are of
+interest to the generated code.
+
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\C{Object.copy}	& A procedure returning a fresh copy of the object
+passed in \C{\$a0} \\
+		& Result will be in \C{\$a0}\\
+\C{Object.abort}	& A procedure that prints out the class name of the
+object in \C{\$a0} \\
+		& Terminates program execution\\
+\C{Object.type\_name}	& Returns the name of the class of object
+passed in \C{\$a0} as a string object\\
+		& Uses the class tag and the table class\_nameTab\\
+\hline
+\C{IO.out\_string}	& The value of the string object on top of the stack
+is printed to \\
+		& the terminal. Does not modify \C{\$a0}.\\
+\C{IO.out\_int}	& The integer value of the Int object on top of the
+stack is printed\\
+		&  to the terminal. Does not modify \C{\$a0}.\\
+\C{IO.in\_string}	& Reads a string from the terminal and returns the read
+string object\\
+		& in \C{\$a0}.\\
+		& (The newline that terminates the input is not part
+of the string)\\
+\C{IO.in\_int}	& Reads an integer from the terminal and returns the read
+int object\\
+		& in \C{\$a0}. \\
+\hline
+\C{String.length}	& Returns the integer object which is the length of the string
+object\\
+		& passed in \C{\$a0}. Result in \C{\$a0}.\\
+\C{String.concat}	& Returns a new string, made from concatenating the
+string object on top \\
+		& of the stack to the string object in \C{\$a0}. Return
+value in \C{\$a0}\\
+\C{String.substr}	& Returns the substring of the string object passed in
+\C{\$a0}, from index~i\\
+		& with length~l. The length is defined by the integer
+object on top of\\
+		& the stack, and the index by the integer object on
+the stack below~l.\\
+		& Result in \C{\$a0}.\\
+\hline
+\C{equality\_test}	& Tests whether the objects passed in \$t1 and \$t2
+have the same\\
+		& primitive type \{Int,String,Bool\} and the same
+value. If they do,\\
+		& the value in \C{\$a0} is returned, otherwise \$a1 is
+returned.\\
+\C{\_dispatch\_abort}	& Called when a dispatch is attempted on a void object.
+Prints the line \\
+               & number, from  \C{\$t1}, and filename, from \C{\$a0}, at
+which the dispatch \\
+               & occurred, and aborts.\\
+\C{\_case\_abort}	& Should be called when a case statement has no match. \\
+		& The class name of the object in \C{\$a0} is printed, and
+execution halts.\\
+\C{\_case\_abort2}       & Called when a case is attempted on a void object.
+Prints the line \\
+               & number, from  \C{\$t1}, and filename, from \C{\$a0}, at
+which the dispatch \\
+               & occurred, and aborts.\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Labels defined in the runtime system.}
+\label{fig2}
+\end{figure}
+
+\subsection{Execution Startup}
+On startup, the following things happen:
+\begin{enumerate}
+\item
+   A fresh copy of the \C{Main} prototype object is made on the heap and
+   then initialized by a call to \C{Main\_init}.
+
+   The code generator must define \C{Main\_init}.  \C{Main\_init}
+should execute all initialization code of \C{Main}'s parent classes
+and finally execute the initializations of attributes in \C{Main} (if
+there are any). 
+
+\item
+   Control is transferred to \C{Main.main}, passing a pointer to the newly
+   created \C{Main} object in  register \C{\$a0}. Register \C{\$ra} contains the
+   return address.
+
+\item
+   If control returns from \C{Main.main}, execution halts with the message
+``COOL program successfully executed''.
+\end{enumerate}
+
+\section{The Garbage Collector}
+
+The Cool runtime environment includes two different garbage
+collectors, a generational garbage collector and a stop-and-copy
+collector.  The generational collector is the one used for programming
+assignments; the stop-and-copy collector is not currently used.  The
+generational collector automatically scans memory for objects that may
+still be in use by the program and copies them into a new (and
+hopefully much smaller) area of memory.
+
+Generated code must contain definitions specifying which of several
+possible configurations of the garbage collector the runtime system should
+use.  The location \C{\_MemMgr\_INITIALIZER} should contain a pointer
+to a initialization routine for the garbage collector and 
+\C{\_MemMgr\_COLLECTOR} should contain a pointer to code for a collector.
+The options either no collection, generational collection, or stop-and-copy
+collection; see comments in the \U{trap.handler} for the names of the
+\C{INITIALIZER} and \C{COLLECTOR} routines for each case.  If the
+location \C{\_MemMgr\_TEST} is non-zero and a garbage collector is enabled,
+the garbage collector is called on every memory allocation, which is useful
+for testing that garbage collection and code generation are working properly
+together.
+
+The collectors assumes every even value on the stack that is a valid heap
+address is a pointer to an object.  Thus, a code generator must ensure
+that even heap addresses on the stack are in fact pointers to objects.
+Similarly, the collector assumes that any value in an object that is
+a valid heap address is a pointer to an object (the exceptions are objects
+of the basic classes, which are handled specially).
+
+The collector updates registers automatically as part of a garbage collection.
+Which registers are updated is determined by a register mask that can be
+reset.  The mask should have bits set for whichever registers hold heap
+addresses at the time a garbage collection is invoked; see the file
+\U{trap.handler} for details.
+
+Generated code must notify the collector of every assignment to an
+attribute.  The function {\tt \_GenGC\_Assign} takes an updated
+address $a$ in register {\tt \$a1} and records information about $a$
+that the garbage collector needs.  If, for example, the attribute at
+offset 12 from the {\tt \$self} register is updated, then a correct
+code sequence is
+\begin{verbatim}
+sw      $x 12($self)
+addiu   $a1 $self 12
+jal     _GenGC_Assign
+\end{verbatim}
+Calling {\tt \_GenGC\_Assign} may cause a garbage collection.  Note
+that if garbage collector is {\em not} being used it is equally important
+{\em not} to call {\tt \_GenGC\_Assign}.  
+
+\end{document}
+

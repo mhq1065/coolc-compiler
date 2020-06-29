@@ -1,0 +1,231 @@
+Terminals unused in grammar
+
+   ELSE
+   FI
+   IF
+   IN
+   LET
+   LOOP
+   POOL
+   THEN
+   WHILE
+   CASE
+   ESAC
+   OF
+   DARROW
+   NEW
+   ISVOID
+   STR_CONST
+   INT_CONST
+   BOOL_CONST
+   OBJECTID
+   ASSIGN
+   NOT
+   LE
+   ERROR
+
+
+语法
+
+    0 $accept: program $end
+
+    1 program: class_list
+
+    2 class_list: class
+    3           | class_list class
+
+    4 class: CLASS TYPEID '{' dummy_feature_list '}' ';'
+    5      | CLASS TYPEID INHERITS TYPEID '{' dummy_feature_list '}' ';'
+
+    6 dummy_feature_list: /* 空 */
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+';' (59) 4 5
+'{' (123) 4 5
+'}' (125) 4 5
+error (256)
+CLASS (258) 4 5
+ELSE (259)
+FI (260)
+IF (261)
+IN (262)
+INHERITS (263) 5
+LET (264)
+LOOP (265)
+POOL (266)
+THEN (267)
+WHILE (268)
+CASE (269)
+ESAC (270)
+OF (271)
+DARROW (272)
+NEW (273)
+ISVOID (274)
+STR_CONST (275)
+INT_CONST (276)
+BOOL_CONST (277)
+TYPEID (278) 4 5
+OBJECTID (279)
+ASSIGN (280)
+NOT (281)
+LE (282)
+ERROR (283)
+
+
+Nonterminals, with rules where they appear
+
+$accept (32)
+    左： 0
+program (33)
+    左： 1, 右： 0
+class_list (34)
+    左： 2 3, 右： 1 3
+class (35)
+    左： 4 5, 右： 2 3
+dummy_feature_list (36)
+    左： 6, 右： 4 5
+
+
+状态 0
+
+    0 $accept: . program $end
+
+    CLASS  shift, and go to state 1
+
+    program     转到状态2
+    class_list  转到状态3
+    class       转到状态4
+
+
+状态 1
+
+    4 class: CLASS . TYPEID '{' dummy_feature_list '}' ';'
+    5      | CLASS . TYPEID INHERITS TYPEID '{' dummy_feature_list '}' ';'
+
+    TYPEID  shift, and go to state 5
+
+
+状态 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 6
+
+
+状态 3
+
+    1 program: class_list .
+    3 class_list: class_list . class
+
+    CLASS  shift, and go to state 1
+
+    $default  reduce using rule 1 (program)
+
+    class  转到状态7
+
+
+状态 4
+
+    2 class_list: class .
+
+    $default  reduce using rule 2 (class_list)
+
+
+状态 5
+
+    4 class: CLASS TYPEID . '{' dummy_feature_list '}' ';'
+    5      | CLASS TYPEID . INHERITS TYPEID '{' dummy_feature_list '}' ';'
+
+    INHERITS  shift, and go to state 8
+    '{'       shift, and go to state 9
+
+
+状态 6
+
+    0 $accept: program $end .
+
+    $default  接受
+
+
+状态 7
+
+    3 class_list: class_list class .
+
+    $default  reduce using rule 3 (class_list)
+
+
+状态 8
+
+    5 class: CLASS TYPEID INHERITS . TYPEID '{' dummy_feature_list '}' ';'
+
+    TYPEID  shift, and go to state 10
+
+
+状态 9
+
+    4 class: CLASS TYPEID '{' . dummy_feature_list '}' ';'
+
+    $default  reduce using rule 6 (dummy_feature_list)
+
+    dummy_feature_list  转到状态11
+
+
+状态 10
+
+    5 class: CLASS TYPEID INHERITS TYPEID . '{' dummy_feature_list '}' ';'
+
+    '{'  shift, and go to state 12
+
+
+状态 11
+
+    4 class: CLASS TYPEID '{' dummy_feature_list . '}' ';'
+
+    '}'  shift, and go to state 13
+
+
+状态 12
+
+    5 class: CLASS TYPEID INHERITS TYPEID '{' . dummy_feature_list '}' ';'
+
+    $default  reduce using rule 6 (dummy_feature_list)
+
+    dummy_feature_list  转到状态14
+
+
+状态 13
+
+    4 class: CLASS TYPEID '{' dummy_feature_list '}' . ';'
+
+    ';'  shift, and go to state 15
+
+
+状态 14
+
+    5 class: CLASS TYPEID INHERITS TYPEID '{' dummy_feature_list . '}' ';'
+
+    '}'  shift, and go to state 16
+
+
+状态 15
+
+    4 class: CLASS TYPEID '{' dummy_feature_list '}' ';' .
+
+    $default  reduce using rule 4 (class)
+
+
+状态 16
+
+    5 class: CLASS TYPEID INHERITS TYPEID '{' dummy_feature_list '}' . ';'
+
+    ';'  shift, and go to state 17
+
+
+状态 17
+
+    5 class: CLASS TYPEID INHERITS TYPEID '{' dummy_feature_list '}' ';' .
+
+    $default  reduce using rule 5 (class)
