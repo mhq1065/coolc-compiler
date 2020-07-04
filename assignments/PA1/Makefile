@@ -41,3 +41,8 @@ run:	compile
 
 clean :
 	rm -f *.s core *~
+
+main: 
+	@echo compile and run $(file).cl
+	${CLASSDIR}/bin/coolc $(file).cl
+	${CLASSDIR}/bin/spim -trap_file ${CLASSDIR}/lib/trap.handler -file $(file).s
