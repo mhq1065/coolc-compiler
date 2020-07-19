@@ -46,3 +46,10 @@ main:
 	@echo compile and run $(file).cl
 	${CLASSDIR}/bin/coolc $(file).cl
 	${CLASSDIR}/bin/spim -trap_file ${CLASSDIR}/lib/trap.handler -file $(file).s
+
+# lex
+lex:
+	@echo run flex $(file).l
+	flex $(file).l
+	cc -o $(file).out lex.yy.c -lfl
+	rm lex.yy.c

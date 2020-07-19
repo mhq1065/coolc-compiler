@@ -1,3 +1,4 @@
+-- 斐波那契数列
 class Main inherits IO {
     s:Int;
     f(n:Int):Int{
@@ -5,8 +6,7 @@ class Main inherits IO {
             let a:Int <- 1,t:Int <- 1,sum:Int <- 1 in {
                 if n<3 then
                     1
-                else
-                    {
+                else {
                         while 2<n loop
                             {
                                 t <- sum;
