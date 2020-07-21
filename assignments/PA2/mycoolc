@@ -1,1 +1,2 @@
-/home/wangyang/cool/src/PA2/mycoolc
+#!/bin/csh -f
+./lexer $* | ./parser $* | ./semant $* | ./cgen $*

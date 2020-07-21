@@ -1,6 +1,7 @@
 *.s
 *.out
-
+tmp*
+temp*
 
 # PA2
 
