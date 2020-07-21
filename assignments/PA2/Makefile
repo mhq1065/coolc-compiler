@@ -1,7 +1,7 @@
 #######################################
 #   将这里的CLASSDIR改成你机子上cool所在的目录
 #   以便Makefile可以找到cool/bin所在的位置
-CLASSDIR= /home/wangyang/cool
+CLASSDIR= ~/cool
 #######################################
 #作业号，用来判断需要链接的头文件和源文件的目录
 ASSN = 2
