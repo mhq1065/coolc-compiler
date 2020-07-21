@@ -1,2 +1,13 @@
 *.s
 *.out
+
+
+# PA2
+
+/assignments/PA2/test.output
+/assignments/PA2/*.s
+/assignments/PA2/*.o
+/assignments/PA2/*.d
+/assignments/PA2/*.cc
+/assignments/PA2/*~
+/assignments/PA2/lexer

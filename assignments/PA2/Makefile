@@ -1,5 +1,5 @@
 #######################################
-#   将这里的CLASSDIR改成你机子上cool所在的目录
+#   将这里的CdLASSDIR改成你机子上cool所在的目录
 #   以便Makefile可以找到cool/bin所在的位置
 CLASSDIR= ~/cool
 #######################################
@@ -30,10 +30,10 @@ OBJS= ${CFIL:.cc=.o}
 OUTPUT= test.output
 
 #指定头文件和源文件的目录
-CPPINCLUDE= -I. -I${CLASSDIR}/include/PA${ASSN} -I${CLASSDIR}/src/PA${ASSN}
+CPPINCLUDE= -I. -I ${CLASSDIR}/include/PA${ASSN} -I ${CLASSDIR}/src/PA${ASSN} 
 
 #设置flex的编译选项,-d表示允许debug，-o表示允许output
-FFLAGS= -d -ocool-lex.cc
+FFLAGS= -d -o cool-lex.cc
 #使用flex
 FLEX=flex ${FFLAGS}
 
