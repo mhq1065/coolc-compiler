@@ -56,4 +56,5 @@
 |目标|文件|
 |-|-|
 |多位计算(加减乘除括号)|task1.l task1.y混合编译|
-|double计算(加减乘除括号)|task1.lp task1p.y混合编译|
+|double计算(加减乘除括号)|task1p.l task1p.y混合编译|
+|布尔运算(与或非括号)|task2.l task2.y混合编译|

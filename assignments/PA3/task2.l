@@ -7,9 +7,13 @@
 
 %%
 
-true  { yylval = atoi(yytext); return T_TRUE; }
-false  { yylval = atoi(yytext); return T_FALSE; }
-
+true  {  return T_TRUE; }
+false  {return T_FALSE; }
+"||"  { return T_OR; }
+"&&"  { return T_AND; }
+"!" {return T_NOT;}
+[()\n]      { return yytext[0]; }
+[ ]         {/* 忽略空格 */}
 %%
 
 int yywrap(){
