@@ -1,13 +1,16 @@
 %{
 /*
- * 识别整数 加减乘除 括号
+ * 识别double 加减乘除 括号 
  */
+#define YYSTYPE double 
 #include "task1.tab.h"
 %}
 
 %%
 
-[0-9]+\.[0-9]*  { yylval = atoi(yytext); return T_NUM; }
+[0-9]+[.][0-9]+  {yylval = atof(yytext); return T_NUM; }
+[0-9]+           {yylval = atof(yytext); return T_NUM; }
+[-/+*()\n]      { return yytext[0]; }
 
 %%
 
