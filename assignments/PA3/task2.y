@@ -13,7 +13,7 @@ S   :   S E '\n'        { if($2==1){printf("ans = true\n");}else{printf("ans = f
     ;
 
 E   :   E T_AND E         { $$ = $1 * $3;}
-    |   E T_OR E         { $$ = ($1 + $3>1)?1:0; }
+    |   E T_OR E         { $$ = ($1 + $3>0)?1:0; }
     |   T_NOT E %prec uminus { $$ = $2 ^ 1; }
     |   T_FALSE           { $$ = 0;}
     |   T_TRUE           { $$ = 1;}
