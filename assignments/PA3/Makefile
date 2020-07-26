@@ -1,7 +1,7 @@
 #######################################
 # 编辑这里
 # 将CLASSDIR设置成你电脑上cool项目所在的位置
-CLASSDIR= /home/wangyang/cool
+CLASSDIR= ~/cool
 #######################################
 
 #作业序号，第三次作业
@@ -44,7 +44,7 @@ CPPINCLUDE= -I. -I${CLASSDIR}/include/PA${ASSN} -I${CLASSDIR}/src/PA${ASSN}
 #bison的编译选项
 BFLAGS = -d -v -y -b cool --debug -p cool_yy
 
-CC=g++
+CC=gcc
 CFLAGS=-g -Wall ${CPPINCLUDE}
 FLEX=flex ${FFLAGS}
 BISON= bison ${BFLAGS}
@@ -56,45 +56,32 @@ source: ${SRC} ${TSRC} ${LSRC} ${LIBS} lsource
 
 lsource: ${LSRC}
 
-${OUTPUT}:	parser good.cl bad.cl
-	@rm -f ${OUTPUT}
-	./myparser good.cl >good.output 2>&1 
-	-./myparser bad.cl >bad.output 2>&1 
+# ${OUTPUT}:	parser good.cl bad.cl
+# 	@rm -f ${OUTPUT}
+# 	./myparser good.cl >good.output 2>&1 
+# 	-./myparser bad.cl >bad.output 2>&1 
 
 parser: ${OBJS}
 	echo "start parser"
 	${CC} ${CFLAGS} ${OBJS} ${LIB} -o parser
 
-.cc.o:
-	${CC} ${CFLAGS} -c $<
+# .cc.o:
+# 	${CC} ${CFLAGS} -c $<
 
-cool-parse.cc cool-parse.h: cool.y
-	bison ${BFLAGS} cool.y
-	mv -f cool.tab.c cool-parse.cc
+# cool-parse.cc cool-parse.h: cool.y
+# 	bison ${BFLAGS} cool.y
+# 	mv -f cool.tab.c cool-parse.cc
 
 dotest:	myparser good.cl
 	@echo "\nRunning parser on good.cl\n"
 	@echo "\nRunning parser on bad.cl\n"
 
-${LIBS}:
-	ln -s ${CLASSDIR}/bin/reference-$@ $@
 #sg: just symlink to the architecture independant refernce-* shell scripts
 #	${CLASSDIR}/etc/link-object ${ASSN} $@
 
 # These dependencies allow you to get the starting files for
 # the assignment.  They will not overwrite a file you already have.
 
-${SRC} :								
-	-${CLASSDIR}/etc/copy-skel ${ASSN} ${SRC}
-
-${LSRC} :
-	-${CLASSDIR}/etc/link-shared ${ASSN} ${LSRC}
-
-${TSRC} ${CSRC}:
-	-ln -s ${CLASSDIR}/src/PA${ASSN}/$@ $@
-
-${HSRC}:
-	-ln -s ${CLASSDIR}/include/PA${ASSN}/$@ $@
 
 submit-clean: ${OUTPUT}
 	-rm -f *.s core ${OBJS} ${CGEN} ${HGEN} *~ parser
@@ -105,7 +92,22 @@ clean :
 clean-compile:
 	@-rm -f core ${OBJS} ${CGEN} ${HGEN} ${LSRC}
 
-%.d: %.cc ${LSRC}
-	${SHELL} -ec '${DEPEND} $< | sed '\''s/\($*\.o\)[ :]*/\1 $@ : /g'\'' > $@'
 
--include ${CFIL:.cc=.d}
+# %.d: %.cc ${LSRC}
+# 	${SHELL} -ec '${DEPEND} $< | sed '\''s/\($*\.o\)[ :]*/\1 $@ : /g'\'' > $@'
+
+# -include ${CFIL:.cc=.d}
+
+task5:
+	# e.g. make task5 file=tmp
+	# ATTENTION: 
+	# 在${file}.l 中，请勿忘记添加"${file}.tab.h"头文件
+
+	# flex 识别token
+	flex -o ${file}.yy.c ${file}.l
+	# bison生成.tab.h 定义token
+	bison -d ${file}.y
+	# bison生成.tab.c
+	bison -o ${file}.tab.c ${file}.y
+	# 生成可执行文件
+	${CC} -o ${file}.out ${file}.yy.c ${file}.tab.c

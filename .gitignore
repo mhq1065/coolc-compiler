@@ -12,3 +12,10 @@ temp*
 /assignments/PA2/*.cc
 /assignments/PA2/*~
 /assignments/PA2/lexer
+
+# PA3
+
+/assignments/PA3/*.yy.c
+/assignments/PA3/*.tab.h
+/assignments/PA3/*.tab.c
+/assignments/PA3/*.out
