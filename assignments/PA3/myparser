@@ -1,1 +1,1 @@
-/home/wangyang/cool/src/PA3/myparser
+./lexer $* | ./parser
