@@ -62,3 +62,7 @@
 
 ## 第六次实验
 
+## Attention
+
+请务必仔细阅读相应的readme
+如有必要，请学习编写修改Makefile文件

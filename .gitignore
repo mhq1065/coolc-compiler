@@ -24,4 +24,5 @@ temp*
 /assignments/PA3/lexer
 /assignments/PA3/semant
 /assignments/PA3/ref-parser
+/assignments/PA3/parser
 /assignments/PA3/*.ouput
