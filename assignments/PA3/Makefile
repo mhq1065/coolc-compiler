@@ -16,7 +16,7 @@ SRC= cool.y cool-tree.handcode.h good.cl bad.cl README
 #生成parser依赖的源文件列表
 CSRC= parser-phase.cc utilities.cc stringtab.cc dumptype.cc \
       tree.cc cool-tree.cc tokens-lex.cc  handle_flags.cc 
-#需要拷贝到当前目录的文件
+#需要链接到当前目录的文件
 # TSRC= myparser mycoolc cool-tree.aps ref-parser
 TSRC= myparser cool-tree.aps ref-parser
 
@@ -122,4 +122,4 @@ task5:
 	# bison生成.tab.c
 	bison -o ${file}.tab.c ${file}.y
 	# 生成可执行文件
-	${CC} -o ${file}.out ${file}.yy.c ${file}.tab.c
+	gcc -o ${file}.out ${file}.yy.c ${file}.tab.c
