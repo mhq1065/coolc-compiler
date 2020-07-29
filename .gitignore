@@ -21,6 +21,7 @@ temp*
 /assignments/PA3/*.out
 /assignments/PA3/*.o
 /assignments/PA3/*.cc
+/assignments/PA3/*.c
 /assignments/PA3/lexer
 /assignments/PA3/semant
 /assignments/PA3/ref-parser
