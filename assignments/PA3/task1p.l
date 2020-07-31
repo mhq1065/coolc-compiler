@@ -3,7 +3,7 @@
  * 识别double 加减乘除 括号 
  */
 #define YYSTYPE double 
-#include "task1.tab.h"
+#include "task1p.tab.h"
 %}
 
 %%
