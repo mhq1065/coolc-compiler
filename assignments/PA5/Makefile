@@ -2,7 +2,7 @@
 # Edit this!
 # Set CLASSDIR to the location of the cool package.
 #   e.g. the makefile needs to access ${CLASSDIR}/bin
-CLASSDIR= /home/wangyang/cool
+CLASSDIR= ~/cool
 #######################################
 
 
@@ -25,7 +25,7 @@ OBJS= ${CFIL:.cc=.o}
 OUTPUT= good.output bad.output
 
 
-CPPINCLUDE= -I. -I${CLASSDIR}/include/PA${ASSN} -I${CLASSDIR}/src/PA${ASSN}
+CPPINCLUDE= -I. -I ${CLASSDIR}/include/PA${ASSN} -I ${CLASSDIR}/src/PA${ASSN}
 
 
 FFLAGS = -d8 -ocool-lex.cc

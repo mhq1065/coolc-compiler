@@ -57,4 +57,18 @@ temp*
 /assignments/PA4/ref-semant
 /assignments/PA4/semant
 /assignments/PA4/symtab_example
+/assignments/PA4/mycoolc
+/assignments/PA4/mysemant
 
+# PA5
+
+/assignments/PA5/*.o
+/assignments/PA5/*.d
+/assignments/PA5/*.cc
+/assignments/PA5/mycoolc
+/assignments/PA5/parser
+/assignments/PA5/semant
+/assignments/PA5/cgen
+/assignments/PA5/lexer
+!/assignments/PA5/cgen.cc
+!/assignments/PA5/cgen_supp.cc
