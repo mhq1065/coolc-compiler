@@ -105,8 +105,8 @@ clean :
 clean-compile:
 	@-rm -f core ${OBJS} ${CGEN} ${HGEN} ${LSRC}
 
-# %.d: %.cc ${LSRC}
-# 	${SHELL} -ec '${DEPEND} $< | sed '\''s/\($*\.o\)[ :]*/\1 $@ : /g'\'' > $@'
+%.d: %.cc ${LSRC}
+	${SHELL} -ec '${DEPEND} $< | sed '\''s/\($*\.o\)[ :]*/\1 $@ : /g'\'' > $@'
 
 -include ${CFIL:.cc=.d}
 

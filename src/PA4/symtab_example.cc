@@ -26,29 +26,29 @@ int main(int argc, char *argv[]) {
   map->addid(Mary, new int(23));
 
   // check whether Fred is in the current scope; predicate is false
-  cout << ((map->probe(Fred) != NULL) ? "Yes\n" : "No\n");
+  std::cout << ((map->probe(Fred) != NULL) ? "Yes\n" : "No\n");
 
   // check whether Mary is in any scope; predicate is true
-  cout << ((map->lookup(Mary) != NULL) ? "Yes\n" : "No\n");
+  std::cout << ((map->lookup(Mary) != NULL) ? "Yes\n" : "No\n");
 
   // print age of most-closely-nested Mary; note the
   // lookup returns a pointer to an integer.
-  cout << *(map->lookup(Mary)) << "\n";
+  std::cout << *(map->lookup(Mary)) << "\n";
 
   // check whether Miguel is in the current scope; predicate is true
-  cout << ((map->probe(Miguel) != NULL) ? "Yes\n" : "No\n");
+  std::cout << ((map->probe(Miguel) != NULL) ? "Yes\n" : "No\n");
 
   // leave a scope
   map->exitscope();
 
   // print age of most-closely-nested Mary
-  cout << *(map->lookup(Mary)) << "\n";
+  std::cout << *(map->lookup(Mary)) << "\n";
 
   // check whether Fred is in the current scope; predicate is now true
-  cout << ((map->probe(Fred) != NULL) ? "Yes\n" : "No\n");
+  std::cout << ((map->probe(Fred) != NULL) ? "Yes\n" : "No\n");
 
   // check whether Miguel is in any scope; predicate is now false
-  cout << ((map->lookup(Miguel) != NULL) ? "Yes\n" : "No\n");
+  std::cout << ((map->lookup(Miguel) != NULL) ? "Yes\n" : "No\n");
 
   return 0;
  

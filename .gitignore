@@ -22,11 +22,12 @@ temp*
 /assignments/PA3/*.o
 /assignments/PA3/*.cc
 /assignments/PA3/*.c
+/assignments/PA3/*.d
 /assignments/PA3/lexer
 /assignments/PA3/semant
 /assignments/PA3/ref-parser
 /assignments/PA3/parser
-/assignments/PA3/*.ouput
+/assignments/PA3/*.output
 
 
 # PA4
@@ -54,3 +55,6 @@ temp*
 /assignments/PA4/cgen
 /assignments/PA4/parser
 /assignments/PA4/ref-semant
+/assignments/PA4/semant
+/assignments/PA4/symtab_example
+
