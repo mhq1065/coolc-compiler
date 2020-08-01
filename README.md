@@ -63,6 +63,15 @@ PA1
 |magic多入口|Lex3.l|
 |统计if个数|Lex4.l|
 
+- 编译命令
+
+```bash
+# flex 识别
+flex ${file}.l
+# gcc 生成.out可执行文件
+gcc -o ${file}.out lex.yy.c -lfl
+```
+
 ## 第四次实验
 
 PA2
@@ -78,18 +87,43 @@ PA3
 
 |目标|文件|
 |-|-|
-|多位计算(加减乘除括号)|task1.l task1.y混合编译|
-|double计算(加减乘除括号)|task1p.l task1p.y混合编译|
-|布尔运算(与或非括号)|task2.l task2.y混合编译|
+|多位计算(加减乘除括号)|task1.l task1.y联合编译|
+|double计算(加减乘除括号)|task1p.l task1p.y联合编译|
+|布尔运算(与或非括号)|task2.l task2.y联合编译|
 |一位数计算器(减法、乘法、赋值)|task3.y 单文件编译|
 |一位数计算器(加减乘除括号赋值)|task4.y 单文件编译|
 |多位数计算器(加减乘除括号赋值)|task5.y 单文件编译|
+
+
+- 联合编译命令
+
+```bash
+# flex 识别token
+flex -o ${file}.yy.c ${file}.l
+# bison生成.tab.h 定义token
+bison -d ${file}.y
+# bison生成.tab.c
+bison -o ${file}.tab.c ${file}.y
+# 生成可执行文件
+gcc -o ${file}.out ${file}.yy.c ${file}.tab.c
+```
+
+- 单文件编译命令
+
+```bash
+# bison生成.c
+bison -o ${file}.c ${file}.y
+# 生成可执行文件
+gcc -o ${file}.out ${file}.c
+```
+
 
 ## 第六次实验
 
 PA3
 
-cool.y即为语法分析器
+cool.y为原语法分析器
+cool.ans.y即为语法分析器，可替换cool.y编译使用，增加了对let的支持
 
 ## 第七次实验
 
